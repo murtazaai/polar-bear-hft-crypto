@@ -253,6 +253,8 @@ cargo run --example agent_demo --features ai-agent
 
 - [Architecture Diagram](./docs/architecture.md)
 - [DSA Forward-Engineering Math](./docs/dsa_math.md)
+- [polar-bear-hft-crypto Wiki](https://github.com/murtazaai/polar-bear-hft-crypto/wiki)
+
 
 | Repo | Description |
 |------|-------------|
