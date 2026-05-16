@@ -39,11 +39,23 @@ impl SignedRequest {
 /// Credential set for HMAC-based exchanges.
 #[derive(Debug, Clone)]
 pub struct HmacCredentials {
+    /// The API key for the exchange.
     pub api_key: String,
+    /// The API secret for the exchange.
     pub api_secret: String,
 }
 
 impl HmacCredentials {
+    /// Creates a new `HmacCredentials` instance with the given API key and secret.
+    ///
+    /// # Arguments
+    ///
+    /// * `api_key` - The API key for the exchange.
+    /// * `api_secret` - The API secret for the exchange.
+    ///
+    /// # Returns
+    ///
+    /// A new `HmacCredentials` instance.
     pub fn new(api_key: impl Into<String>, api_secret: impl Into<String>) -> Self {
         Self {
             api_key: api_key.into(),
