@@ -23,15 +23,45 @@ use std::collections::HashMap;
 
 const BASE_URL: &str = "https://api.kraken.com";
 
+/// Authentication credentials for Kraken L1.
+///
+/// This struct holds the credentials used to sign requests for Kraken L1.
 pub struct KrakenAuth {
     creds: HmacCredentials,
 }
 
+/// Authenticates requests for Kraken L1.
+///
+/// This struct holds the credentials used to sign requests for Kraken L1.
+///
+/// # Examples
+/// ```
+/// use polar_bear_hft_crypto::exchange::auth::HmacCredentials;
+/// let auth = KrakenAuth::new(HmacCredentials::from_env("KRAKEN_API_KEY", "KRAKEN_API_SECRET").unwrap());
+/// ```
 impl KrakenAuth {
+    /// Create a new KrakenAuth instance with the given credentials.
+    ///
+    /// # Arguments
+    ///
+    /// * `creds` - The credentials to use for signing requests.
+    ///
+    /// # Returns
+    ///
+    /// A new KrakenAuth instance.
     pub fn new(creds: HmacCredentials) -> Self {
         Self { creds }
     }
 
+    /// Create a new KrakenAuth instance from environment variables.
+    ///
+    /// # Returns
+    ///
+    /// A new KrakenAuth instance.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the environment variables are not set.
     pub fn from_env() -> Result<Self> {
         Ok(Self::new(HmacCredentials::from_env(
             "KRAKEN_API_KEY",

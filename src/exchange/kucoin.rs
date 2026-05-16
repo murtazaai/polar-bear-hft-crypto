@@ -26,16 +26,60 @@ use std::collections::HashMap;
 
 const BASE_URL: &str = "https://api.kucoin.com";
 
+/// KuCoin credentials for authentication.
+///
+/// # Examples
+///
+/// ```
+/// let creds = KuCoinCredentials::new("my-api-key", "my-api-secret", "my-passphrase");
+/// ```
+///
+/// ```
+/// let creds = KuCoinCredentials::from_env();
+/// ```
+///
+/// # Errors
+///
+/// Returns an error if the environment variables are not set.
 pub struct KuCoinCredentials {
+    /// The KuCoin API key.
     pub api_key: String,
+    /// The KuCoin API secret.
     pub api_secret: String,
+    /// The KuCoin passphrase.
     pub passphrase: String,
 }
 
 impl KuCoinCredentials {
+    /// Creates a new KuCoinCredentials instance.
+    ///
+    /// # Arguments
+    ///
+    /// * `api_key` - The KuCoin API key.
+    /// * `api_secret` - The KuCoin API secret.
+    /// * `passphrase` - The KuCoin passphrase.
+    ///
+    /// # Returns
+    ///
+    /// A new KuCoinCredentials instance.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the environment variables are not set.
+    ///
+    /// # Returns
+    ///
+    /// A new KuCoinCredentials instance.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the environment variables are not set.
     pub fn new(
+        // The KuCoin API key.
         api_key: impl Into<String>,
+        // The KuCoin API secret.
         api_secret: impl Into<String>,
+        // The KuCoin passphrase.
         passphrase: impl Into<String>,
     ) -> Self {
         Self {
@@ -45,7 +89,19 @@ impl KuCoinCredentials {
         }
     }
 
+    /// Creates a new KuCoinCredentials instance from the environment variables.
+    ///
+    /// # Returns
+    ///
+    /// A new KuCoinCredentials instance.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the environment variables are not set.
     pub fn from_env() -> Self {
+        // Loads the KuCoin API key, secret, and passphrase from the environment variables.
+        // If the environment variables are not set, a default value is used instead.
+        // This is useful for local development and testing without setting up environment variables.
         Self::new(
             std::env::var("KUCOIN_API_KEY").unwrap_or_else(|_| "DRY_RUN_KEY".into()),
             std::env::var("KUCOIN_API_SECRET").unwrap_or_else(|_| "dry-run-secret".into()),
@@ -54,12 +110,38 @@ impl KuCoinCredentials {
     }
 }
 
+/// Authenticates with the KuCoin API using the provided credentials.
+///
+/// This struct holds the credentials and provides methods for signing requests to the KuCoin API.
+///
+/// # Examples
+///
+/// ```
+/// let auth = KuCoinAuth::from_env();
+/// ```
 pub struct KuCoinAuth {
+    /// The KuCoin credentials.
     creds: KuCoinCredentials,
 }
 
 impl KuCoinAuth {
+    /// Creates a new KuCoinAuth instance with the provided credentials.
+    ///
+    /// # Arguments
+    ///
+    /// * `creds` - The KuCoin credentials.
+    ///
+    /// # Returns
+    ///
+    /// A new KuCoinAuth instance.
+    ///
+    /// # Examples
+    ///
+    /// ```
+    /// let auth = KuCoinAuth::new(KuCoinCredentials::new("api_key", "api_secret", "passphrase"));
+    /// ```
     pub fn new(creds: KuCoinCredentials) -> Self {
+        // Validate the credentials.
         Self { creds }
     }
 

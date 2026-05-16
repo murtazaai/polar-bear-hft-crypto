@@ -18,23 +18,54 @@
 //! - https://www.okx.com/docs-v5/en/#overview-rest-authentication
 
 use crate::crypto::hmac::hmac_sha256_base64;
-use crate::exchange::auth::{timestamp_iso8601, ExchangeAuth, SignedRequest};
+use crate::exchange::auth::{ExchangeAuth, SignedRequest, timestamp_iso8601};
 use anyhow::Result;
 use std::collections::HashMap;
 
 const BASE_URL: &str = "https://www.okx.com";
 
+/// OKX credentials.
+///
+/// # Examples
+///
+/// ```
+/// let creds = OkxCredentials::new("api_key", "api_secret", "passphrase");
+/// ```
 #[derive(Clone)]
 pub struct OkxCredentials {
+    /// API key.
     pub api_key: String,
+    /// API secret.
     pub api_secret: String,
+    /// Passphrase.
     pub passphrase: String,
 }
 
+/// OKX authentication.
+///
+/// # Examples
+///
+/// ```
+/// let creds = OkxCredentials::new("api_key", "api_secret", "passphrase");
+/// ```
 impl OkxCredentials {
+    /// Creates a new [`OkxCredentials`] instance.
+    ///
+    /// # Arguments
+    ///
+    /// * `api_key` - API key.
+    /// * `api_secret` - API secret.
+    /// * `passphrase` - Passphrase.
+    ///
+    /// # Returns
+    ///
+    /// A new [`OkxCredentials`] instance.
     pub fn new(
+        // API key.
         api_key: impl Into<String>,
+        // API secret.
         api_secret: impl Into<String>,
+        // Passphrase.
         passphrase: impl Into<String>,
     ) -> Self {
         Self {
@@ -44,7 +75,33 @@ impl OkxCredentials {
         }
     }
 
+    /// Creates a new [`OkxCredentials`] instance from environment variables.
+    ///
+    /// # Returns
+    ///
+    /// A new [`OkxCredentials`] instance.
+    ///
+    /// # Panics
+    ///
+    /// Panics if the environment variables are not set.
+    ///
+    /// # Environment Variables
+    ///
+    /// * `OKX_API_KEY` - API key.
+    /// * `OKX_API_SECRET` - API secret.
+    /// * `OKX_PASSPHRASE` - Passphrase.
+    ///
+    /// # Default Values
+    ///
+    /// * `DRY_RUN_KEY` - API key.
+    /// * `dry-run-secret` - API secret.
+    /// * `dry-run-passphrase` - Passphrase.
     pub fn from_env() -> Self {
+        // Creates a new [`OkxCredentials`] instance from environment variables.
+        //
+        // # Panics
+        //
+        // Panics if the environment variables are not set.
         Self::new(
             std::env::var("OKX_API_KEY").unwrap_or_else(|_| "DRY_RUN_KEY".into()),
             std::env::var("OKX_API_SECRET").unwrap_or_else(|_| "dry-run-secret".into()),
@@ -53,11 +110,39 @@ impl OkxCredentials {
     }
 }
 
+/// Authenticates with the OKX API using the provided credentials.
+///
+/// # Example
+///
+/// ```
+/// use polar_bear_hft_crypto::exchange::okx::OkxAuth;
+///
+/// let auth = OkxAuth::new(OkxCredentials::from_env());
+/// ```
 pub struct OkxAuth {
+    /// The credentials used to authenticate with the OKX API.
     creds: OkxCredentials,
 }
 
+/// Authenticates with the OKX API using the provided credentials.
+///
+/// # Example
+///
+/// ```
+/// use polar_bear_hft_crypto::exchange::okx::OkxAuth;
+///
+/// let auth = OkxAuth::new(OkxCredentials::from_env());
+/// ```
 impl OkxAuth {
+    /// Creates a new `OkxAuth` instance with the provided credentials.
+    ///
+    /// # Arguments
+    ///
+    /// * `creds` - The credentials used to authenticate with the OKX API.
+    ///
+    /// # Returns
+    ///
+    /// A new `OkxAuth` instance.
     pub fn new(creds: OkxCredentials) -> Self {
         Self { creds }
     }
@@ -86,7 +171,10 @@ impl OkxAuth {
         headers.insert("OK-ACCESS-KEY".to_string(), self.creds.api_key.clone());
         headers.insert("OK-ACCESS-SIGN".to_string(), sig);
         headers.insert("OK-ACCESS-TIMESTAMP".to_string(), timestamp.clone());
-        headers.insert("OK-ACCESS-PASSPHRASE".to_string(), self.creds.passphrase.clone());
+        headers.insert(
+            "OK-ACCESS-PASSPHRASE".to_string(),
+            self.creds.passphrase.clone(),
+        );
         headers.insert("Content-Type".to_string(), "application/json".to_string());
 
         Ok((headers, timestamp))
@@ -158,7 +246,9 @@ mod tests {
     #[test]
     fn sign_order_has_required_headers() {
         let auth = dry_run();
-        let req = auth.sign_order("BTC-USDT", "buy", 0.001, Some(65000.0)).unwrap();
+        let req = auth
+            .sign_order("BTC-USDT", "buy", 0.001, Some(65000.0))
+            .unwrap();
         assert!(req.headers.contains_key("OK-ACCESS-KEY"));
         assert!(req.headers.contains_key("OK-ACCESS-SIGN"));
         assert!(req.headers.contains_key("OK-ACCESS-TIMESTAMP"));

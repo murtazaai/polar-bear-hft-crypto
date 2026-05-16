@@ -17,21 +17,57 @@
 //! - https://docs.cdp.coinbase.com/advanced-trade/docs/rest-api-auth
 
 use crate::crypto::hmac::hmac_sha256_hex;
-use crate::exchange::auth::{timestamp_s, ExchangeAuth, HmacCredentials, SignedRequest};
+use crate::exchange::auth::{ExchangeAuth, HmacCredentials, SignedRequest, timestamp_s};
 use anyhow::Result;
 use std::collections::HashMap;
 
 const BASE_URL: &str = "https://api.coinbase.com";
 
+/// Authenticates with the Coinbase Advanced Trade REST API using HMAC-SHA256.
+///
+/// # Example
+///
+/// ```rust,no_run
+/// use polar_bear_hft_crypto::exchange::CoinbaseAuth;
+///
+/// let auth = CoinbaseAuth::from_env().unwrap();
+/// ```
 pub struct CoinbaseAuth {
     creds: HmacCredentials,
 }
 
+/// Authenticates with the Coinbase Advanced Trade REST API using HMAC-SHA256.
+///
+/// # Example
+///
+/// ```rust,no_run
+/// use polar_bear_hft_crypto::exchange::CoinbaseAuth;
+///
+/// let auth = CoinbaseAuth::from_env().unwrap();
+/// ```
 impl CoinbaseAuth {
+    /// Creates a new `CoinbaseAuth` instance with the given credentials.
+    ///
+    /// # Arguments
+    ///
+    /// * `creds` - The credentials to use for authentication.
+    ///
+    /// # Returns
+    ///
+    /// A new `CoinbaseAuth` instance.
     pub fn new(creds: HmacCredentials) -> Self {
         Self { creds }
     }
 
+    /// Creates a new `CoinbaseAuth` instance from environment variables.
+    ///
+    /// # Returns
+    ///
+    /// A new `CoinbaseAuth` instance.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the environment variables are not set.
     pub fn from_env() -> Result<Self> {
         Ok(Self::new(HmacCredentials::from_env(
             "COINBASE_API_KEY",
@@ -39,13 +75,7 @@ impl CoinbaseAuth {
         )?))
     }
 
-    fn sign(
-        &self,
-        timestamp: u64,
-        method: &str,
-        path: &str,
-        body: &str,
-    ) -> Result<String> {
+    fn sign(&self, timestamp: u64, method: &str, path: &str, body: &str) -> Result<String> {
         let prehash = format!("{timestamp}{method}{path}{body}");
         hmac_sha256_hex(self.creds.api_secret.as_bytes(), prehash.as_bytes())
     }
@@ -138,7 +168,9 @@ mod tests {
     #[test]
     fn sign_order_has_coinbase_headers() {
         let auth = dry_run();
-        let req = auth.sign_order("BTC-USD", "BUY", 0.001, Some(65000.0)).unwrap();
+        let req = auth
+            .sign_order("BTC-USD", "BUY", 0.001, Some(65000.0))
+            .unwrap();
         assert!(req.headers.contains_key("CB-ACCESS-KEY"));
         assert!(req.headers.contains_key("CB-ACCESS-SIGN"));
         assert!(req.headers.contains_key("CB-ACCESS-TIMESTAMP"));

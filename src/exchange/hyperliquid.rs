@@ -44,12 +44,19 @@ pub struct HyperliquidAction {
 /// Signed Hyperliquid L1 action ready to broadcast.
 #[derive(Debug, Clone, serde::Serialize)]
 pub struct SignedHyperliquidAction {
+    /// The signed action to be broadcast.
     pub action: HyperliquidAction,
+    /// The signature of the action.
     pub signature: Ed25519SignatureResult,
+    /// The public key of the signer, in hex format.
     pub public_key_hex: String,
 }
 
+/// Authentication credentials for Hyperliquid L1.
+///
+/// This struct holds the signer used to sign actions for Hyperliquid L1.
 pub struct HyperliquidAuth {
+    /// The signer used to sign actions.
     signer: Ed25519Signer,
 }
 

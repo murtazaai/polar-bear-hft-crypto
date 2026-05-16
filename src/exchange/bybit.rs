@@ -19,23 +19,69 @@
 //! - https://bybit-exchange.github.io/docs/v5/guide
 
 use crate::crypto::hmac::hmac_sha256_hex;
-use crate::exchange::auth::{timestamp_ms, ExchangeAuth, HmacCredentials, SignedRequest};
+use crate::exchange::auth::{ExchangeAuth, HmacCredentials, SignedRequest, timestamp_ms};
 use anyhow::Result;
 use std::collections::HashMap;
 
 const BASE_URL: &str = "https://api.bybit.com";
 const RECV_WINDOW: &str = "5000";
 
+/// Authenticates with the Bybit API using an API key and secret.
+///
+/// # Example
+///
+/// ```rust,no_run
+/// use polar_bear_hft_crypto::exchange::bybit::BybitAuth;
+///
+/// let auth = BybitAuth::from_env().unwrap();
+/// ```
 pub struct BybitAuth {
+    /// The credentials for the Bybit API.
     creds: HmacCredentials,
 }
 
+/// Authenticates with the Bybit API using an API key and secret.
+///
+/// # Example
+///
+/// ```rust,no_run
+/// use polar_bear_hft_crypto::exchange::bybit::BybitAuth;
+///
+/// let auth = BybitAuth::from_env().unwrap();
+/// ```
 impl BybitAuth {
+    /// Creates a new `BybitAuth` instance with the given credentials.
+    ///
+    /// # Arguments
+    ///
+    /// * `creds` - The credentials for the Bybit API.
+    ///
+    /// # Returns
+    ///
+    /// A new `BybitAuth` instance.
     pub fn new(creds: HmacCredentials) -> Self {
         Self { creds }
     }
 
+    /// Creates a new `BybitAuth` instance from environment variables.
+    ///
+    /// # Returns
+    ///
+    /// A new `BybitAuth` instance.
+    ///
+    /// # Errors
+    ///
+    /// Returns an error if the environment variables are not set.
+    ///
+    /// # Example
+    ///
+    /// ```rust,no_run
+    /// use polar_bear_hft_crypto::exchange::BybitAuth;
+    ///
+    /// let auth = BybitAuth::from_env().unwrap();
+    /// ```
     pub fn from_env() -> Result<Self> {
+        // Load credentials from environment variables and create a new `BybitAuth` instance.
         Ok(Self::new(HmacCredentials::from_env(
             "BYBIT_API_KEY",
             "BYBIT_API_SECRET",
@@ -45,9 +91,7 @@ impl BybitAuth {
     fn sign(&self, timestamp: u64, payload: &str) -> Result<String> {
         let prehash = format!(
             "{}{}{}{payload}",
-            timestamp,
-            self.creds.api_key,
-            RECV_WINDOW
+            timestamp, self.creds.api_key, RECV_WINDOW
         );
         hmac_sha256_hex(self.creds.api_secret.as_bytes(), prehash.as_bytes())
     }
@@ -130,8 +174,15 @@ mod tests {
     #[test]
     fn sign_order_headers_present() {
         let auth = dry_run();
-        let req = auth.sign_order("BTCUSDT", "Buy", 0.001, Some(65000.0)).unwrap();
-        for h in &["X-BAPI-API-KEY", "X-BAPI-SIGN", "X-BAPI-TIMESTAMP", "X-BAPI-RECV-WINDOW"] {
+        let req = auth
+            .sign_order("BTCUSDT", "Buy", 0.001, Some(65000.0))
+            .unwrap();
+        for h in &[
+            "X-BAPI-API-KEY",
+            "X-BAPI-SIGN",
+            "X-BAPI-TIMESTAMP",
+            "X-BAPI-RECV-WINDOW",
+        ] {
             assert!(req.headers.contains_key(*h), "missing header: {h}");
         }
     }

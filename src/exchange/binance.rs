@@ -16,23 +16,57 @@
 //! - https://binance-docs.github.io/apidocs/spot/en/#signed-trade-and-user_data-endpoint-security
 
 use crate::crypto::hmac::hmac_sha256_hex;
-use crate::exchange::auth::{
-    timestamp_ms, ExchangeAuth, HmacCredentials, SignedRequest,
-};
+use crate::exchange::auth::{ExchangeAuth, HmacCredentials, SignedRequest, timestamp_ms};
 use anyhow::Result;
 use std::collections::HashMap;
 
 const BASE_URL: &str = "https://api.binance.com";
 
+/// Binance authentication using HMAC-SHA256.
+///
+/// # Example
+///
+/// ```rust
+/// use polar_bear_hft_crypto::exchange::binance::BinanceAuth;
+///
+/// let auth = BinanceAuth::from_env().unwrap();
+/// ```
 pub struct BinanceAuth {
     creds: HmacCredentials,
 }
 
+/// Creates a new [`BinanceAuth`] instance from the environment variables `BINANCE_API_KEY` and `BINANCE_API_SECRET`.
+///
+/// # Example
+///
+/// ```rust,no_run
+/// use polar_bear_hft_crypto::exchange::binance::BinanceAuth;
+///
+/// let auth = BinanceAuth::from_env().unwrap();
+/// ```
 impl BinanceAuth {
+    /// Creates a new [`BinanceAuth`] instance from the environment variables `BINANCE_API_KEY` and `BINANCE_API_SECRET`.
+    ///
+    /// # Example
+    ///
+    /// ```rust,no_run
+    /// use polar_bear_hft_crypto::exchange::binance::BinanceAuth;
+    ///
+    /// let auth = BinanceAuth::from_env().unwrap();
+    /// ```
     pub fn new(creds: HmacCredentials) -> Self {
         Self { creds }
     }
 
+    /// Creates a new [`BinanceAuth`] instance from the environment variables `BINANCE_API_KEY` and `BINANCE_API_SECRET`.
+    ///
+    /// # Example
+    ///
+    /// ```rust,no_run
+    /// use polar_bear_hft_crypto::exchange::binance::BinanceAuth;
+    ///
+    /// let auth = BinanceAuth::from_env().unwrap();
+    /// ```
     pub fn from_env() -> Result<Self> {
         Ok(Self::new(HmacCredentials::from_env(
             "BINANCE_API_KEY",
@@ -128,8 +162,13 @@ mod tests {
     #[test]
     fn sign_order_url_contains_signature() {
         let auth = dry_run_auth();
-        let req = auth.sign_order("BTCUSDT", "BUY", 0.001, Some(65000.0)).unwrap();
-        assert!(req.url.contains("signature="), "URL must contain signature param");
+        let req = auth
+            .sign_order("BTCUSDT", "BUY", 0.001, Some(65000.0))
+            .unwrap();
+        assert!(
+            req.url.contains("signature="),
+            "URL must contain signature param"
+        );
         assert!(req.url.contains("symbol=BTCUSDT"));
         assert!(req.url.contains("side=BUY"));
         assert_eq!(req.method, "POST");
