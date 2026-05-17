@@ -3,8 +3,9 @@
 **Cryptographic signing layer for high-frequency trading**  
 ECDSA / Ed25519 forward-engineering · 7-exchange API authentication · Rig (ARC) AI agent integration
 
-[![CI](https://github.com/murtazaai/polar-bear-hft-crypto/actions/workflows/ci.yml/badge.svg)](https://github.com/murtazaai/polar-bear-hft-crypto/actions)
 [![Rust](https://img.shields.io/badge/rust-1.93.1+-orange)](https://www.rust-lang.org/)
+[![Edition](https://img.shields.io/badge/Edition-2024-blue)](https://doc.rust-lang.org/edition-guide/)
+[![rig-core](https://img.shields.io/badge/rig--core-0.37-purple)](https://rig.rs)
 [![License: PBS](https://img.shields.io/badge/license-PBS-blue)](LICENSE-PBS)
 
 > Built by **[Murtaza Ali Imtiaz](https://github.com/murtazaai)** · Technology Lead · Polar Bear Systems · July 2019–Present
