@@ -7,7 +7,7 @@ ECDSA / Ed25519 forward-engineering · 7-exchange API authentication · Rig (ARC
 [![Rust](https://img.shields.io/badge/rust-1.93.1+-orange)](https://www.rust-lang.org/)
 [![License: PBS](https://img.shields.io/badge/license-PBS-blue)](LICENSE-PBS)
 
-> Technology Lead: Murtaza Ali Imtiaz · Polar Bear Systems · July 2019–Present
+> Built by **[Murtaza Ali Imtiaz](https://github.com/murtazaai)** · Technology Lead · Polar Bear Systems · July 2019–Present
 
 ---
 
