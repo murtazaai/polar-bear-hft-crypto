@@ -279,7 +279,8 @@ cargo run --example agent_demo --features ai-agent
 
 ## License
 
-PBS License: [LICENSE-PBS](./LICENSE-PBS)
+Proprietary - © 2026 Murtaza Ali Imtiaz / Polar Bear Systems  
+See [LICENSE-PBS](LICENSE-PBS) for permitted use.
 
 ---
 
