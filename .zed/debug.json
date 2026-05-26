@@ -1,5 +1,5 @@
-// polar-bear-hft-crypto — Zed debugger configurations
-// Adapter: CodeLLDB (required for Rust — sourceLanguages is mandatory)
+// polar-bear-hft-crypto - Zed debugger configurations
+// Adapter: CodeLLDB (required for Rust - sourceLanguages is mandatory)
 //
 // All configs are DRY-RUN safe: exchange credentials are omitted by default
 // so no live orders can be accidentally placed during a debug session.
@@ -8,7 +8,7 @@
 [
     // ── Binary: CLI subcommands ──────────────────────────────────────────────────
     {
-        "label": "Debug — demo-all (default entrypoint)",
+        "label": "Debug - demo-all (default entrypoint)",
         "build": {
             "command": "cargo",
             "args": [
@@ -31,7 +31,7 @@
         "adapter": "CodeLLDB"
     },
     {
-        "label": "Debug — demo-crypto (ECDSA · Ed25519 · HMAC)",
+        "label": "Debug - demo-crypto (ECDSA · Ed25519 · HMAC)",
         "build": {
             "command": "cargo",
             "args": [
@@ -54,7 +54,7 @@
         "adapter": "CodeLLDB"
     },
     {
-        "label": "Debug — demo-exchanges (7-exchange signed headers)",
+        "label": "Debug - demo-exchanges (7-exchange signed headers)",
         "build": {
             "command": "cargo",
             "args": [
@@ -78,7 +78,7 @@
     },
     // ── AI-agent feature ────────────────────────────────────────────────────────
     {
-        "label": "Debug — ai-agent feature (--features ai-agent)",
+        "label": "Debug - ai-agent feature (--features ai-agent)",
         "build": {
             "command": "cargo",
             "args": [
@@ -108,7 +108,7 @@
     // Strip-debuginfo is enabled in [profile.release], so backtraces are limited.
     // Useful for benchmarking the signing hot-path with breakpoints on entry/exit.
     {
-        "label": "Debug — release binary (demo-all)",
+        "label": "Debug - release binary (demo-all)",
         "build": {
             "command": "cargo",
             "args": [
@@ -136,7 +136,7 @@
     // the conventional path cargo places it under target/debug/deps/.
     // Tip: run `cargo test --no-run 2>&1 | grep "Executable"` to confirm the path.
     {
-        "label": "Debug — crypto_tests (ECDSA · Ed25519 · HMAC unit tests)",
+        "label": "Debug - crypto_tests (ECDSA · Ed25519 · HMAC unit tests)",
         "build": {
             "command": "cargo",
             "args": [
@@ -146,7 +146,7 @@
                 "--no-run"
             ]
         },
-        // CodeLLDB attaches to the test binary — cargo places it in target/debug/deps/
+        // CodeLLDB attaches to the test binary - cargo places it in target/debug/deps/
         // with a hash suffix.  Use a glob-friendly path or the exact binary from
         // `cargo test --no-run 2>&1 | grep "Executable"`.
         "program": "$ZED_WORKTREE_ROOT/target/debug/deps/crypto_tests",
@@ -164,7 +164,7 @@
         "adapter": "CodeLLDB"
     },
     {
-        "label": "Debug — exchange_auth_tests (all 7 adapters)",
+        "label": "Debug - exchange_auth_tests (all 7 adapters)",
         "build": {
             "command": "cargo",
             "args": [
@@ -189,7 +189,7 @@
         "adapter": "CodeLLDB"
     },
     {
-        "label": "Debug — Anthropic provider tests (live, requires API key)",
+        "label": "Debug - Anthropic provider tests (live, requires API key)",
         "build": {
             "command": "cargo",
             "args": [
@@ -220,7 +220,7 @@
     },
     // ── Examples ────────────────────────────────────────────────────────────────
     {
-        "label": "Debug — example: crypto_demo",
+        "label": "Debug - example: crypto_demo",
         "build": {
             "command": "cargo",
             "args": [
@@ -243,7 +243,7 @@
         "adapter": "CodeLLDB"
     },
     {
-        "label": "Debug — example: exchange_demo (DRY-RUN)",
+        "label": "Debug - example: exchange_demo (DRY-RUN)",
         "build": {
             "command": "cargo",
             "args": [
@@ -266,7 +266,7 @@
         "adapter": "CodeLLDB"
     },
     {
-        "label": "Debug — example: agent_demo (requires ANTHROPIC_API_KEY)",
+        "label": "Debug - example: agent_demo (requires ANTHROPIC_API_KEY)",
         "build": {
             "command": "cargo",
             "args": [

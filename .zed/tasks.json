@@ -1,4 +1,4 @@
-// polar-bear-hft-crypto — Zed task runner
+// polar-bear-hft-crypto - Zed task runner
 // Rust HFT cryptographic signing layer · 7 exchanges · ECDSA/Ed25519/HMAC
 //
 // Key: tasks are ordered from fastest (check/fmt) → slowest (release/doc),
@@ -6,7 +6,7 @@
 [
     // ── Quick feedback ─────────────────────────────────────────────────────────
     {
-        "label": "check — all targets (fast)",
+        "label": "check - all targets (fast)",
         "command": "cargo",
         "args": [
             "check",
@@ -21,7 +21,7 @@
         "reveal": "always"
     },
     {
-        "label": "check — ai-agent feature",
+        "label": "check - ai-agent feature",
         "command": "cargo",
         "args": [
             "check",
@@ -39,7 +39,7 @@
     },
     // ── Formatting ─────────────────────────────────────────────────────────────
     {
-        "label": "fmt — format all (rustfmt edition=2024)",
+        "label": "fmt - format all (rustfmt edition=2024)",
         "command": "cargo",
         "args": [
             "fmt",
@@ -50,7 +50,7 @@
         "reveal": "always"
     },
     {
-        "label": "fmt — check only (CI mode)",
+        "label": "fmt - check only (CI mode)",
         "command": "cargo",
         "args": [
             "fmt",
@@ -64,7 +64,7 @@
     },
     // ── Linting ────────────────────────────────────────────────────────────────
     {
-        "label": "clippy — strict (all targets, -D warnings)",
+        "label": "clippy - strict (all targets, -D warnings)",
         "command": "cargo",
         "args": [
             "clippy",
@@ -87,7 +87,7 @@
         "reveal": "always"
     },
     {
-        "label": "clippy — ai-agent feature (strict)",
+        "label": "clippy - ai-agent feature (strict)",
         "command": "cargo",
         "args": [
             "clippy",
@@ -113,7 +113,7 @@
     },
     // ── Build ──────────────────────────────────────────────────────────────────
     {
-        "label": "build — dev",
+        "label": "build - dev",
         "command": "cargo",
         "args": [
             "build"
@@ -127,14 +127,14 @@
         "reveal": "always"
     },
     {
-        "label": "build — release (native CPU, LTO)",
+        "label": "build - release (native CPU, LTO)",
         "command": "cargo",
         "args": [
             "build",
             "--release"
         ],
         "env": {
-            // Disable incremental for release — matches [profile.release] lto=true
+            // Disable incremental for release - matches [profile.release] lto=true
             "CARGO_INCREMENTAL": "0",
             // native optimisations (AVX2 etc.) for the signing hot-path
             "RUSTFLAGS": "-C target-cpu=native"
@@ -144,7 +144,7 @@
         "reveal": "always"
     },
     {
-        "label": "build — ai-agent feature (dev)",
+        "label": "build - ai-agent feature (dev)",
         "command": "cargo",
         "args": [
             "build",
@@ -160,7 +160,7 @@
         "reveal": "always"
     },
     {
-        "label": "build — all features (docs.rs parity)",
+        "label": "build - all features (docs.rs parity)",
         "command": "cargo",
         "args": [
             "build",
@@ -176,7 +176,7 @@
     },
     // ── Tests ──────────────────────────────────────────────────────────────────
     {
-        "label": "test — workspace (8 threads)",
+        "label": "test - workspace (8 threads)",
         "command": "cargo",
         "args": [
             "test",
@@ -193,7 +193,7 @@
         "reveal": "always"
     },
     {
-        "label": "test — workspace with stdout (--nocapture)",
+        "label": "test - workspace with stdout (--nocapture)",
         "command": "cargo",
         "args": [
             "test",
@@ -211,7 +211,7 @@
         "reveal": "always"
     },
     {
-        "label": "test — crypto primitives (ECDSA · Ed25519 · HMAC)",
+        "label": "test - crypto primitives (ECDSA · Ed25519 · HMAC)",
         "command": "cargo",
         "args": [
             "test",
@@ -229,7 +229,7 @@
         "reveal": "always"
     },
     {
-        "label": "test — 7-exchange auth adapters",
+        "label": "test - 7-exchange auth adapters",
         "command": "cargo",
         "args": [
             "test",
@@ -247,7 +247,7 @@
         "reveal": "always"
     },
     {
-        "label": "test — Anthropic live provider (requires ANTHROPIC_API_KEY)",
+        "label": "test - Anthropic live provider (requires ANTHROPIC_API_KEY)",
         "command": "cargo",
         "args": [
             "test",
@@ -269,7 +269,7 @@
         "reveal": "always"
     },
     {
-        "label": "test — ai-agent feature (unit tests only)",
+        "label": "test - ai-agent feature (unit tests only)",
         "command": "cargo",
         "args": [
             "test",
@@ -286,9 +286,9 @@
         "use_new_terminal": false,
         "reveal": "always"
     },
-    // ── Run — CLI subcommands ──────────────────────────────────────────────────
+    // ── Run - CLI subcommands ──────────────────────────────────────────────────
     {
-        "label": "run — demo-all (default, DRY-RUN)",
+        "label": "run - demo-all (default, DRY-RUN)",
         "command": "cargo",
         "args": [
             "run",
@@ -305,7 +305,7 @@
         "reveal": "always"
     },
     {
-        "label": "run — demo-crypto (ECDSA · Ed25519 · HMAC)",
+        "label": "run - demo-crypto (ECDSA · Ed25519 · HMAC)",
         "command": "cargo",
         "args": [
             "run",
@@ -322,7 +322,7 @@
         "reveal": "always"
     },
     {
-        "label": "run — demo-exchanges (7-exchange signed requests)",
+        "label": "run - demo-exchanges (7-exchange signed requests)",
         "command": "cargo",
         "args": [
             "run",
@@ -340,7 +340,7 @@
     },
     // ── Examples ──────────────────────────────────────────────────────────────
     {
-        "label": "example — crypto_demo",
+        "label": "example - crypto_demo",
         "command": "cargo",
         "args": [
             "run",
@@ -357,7 +357,7 @@
         "reveal": "always"
     },
     {
-        "label": "example — exchange_demo (DRY-RUN)",
+        "label": "example - exchange_demo (DRY-RUN)",
         "command": "cargo",
         "args": [
             "run",
@@ -374,7 +374,7 @@
         "reveal": "always"
     },
     {
-        "label": "example — agent_demo (requires ANTHROPIC_API_KEY)",
+        "label": "example - agent_demo (requires ANTHROPIC_API_KEY)",
         "command": "cargo",
         "args": [
             "run",
@@ -394,7 +394,7 @@
     },
     // ── Documentation ──────────────────────────────────────────────────────────
     {
-        "label": "doc — all features (docs.rs mode, open in browser)",
+        "label": "doc - all features (docs.rs mode, open in browser)",
         "command": "cargo",
         "args": [
             "doc",
@@ -411,7 +411,7 @@
         "reveal": "always"
     },
     {
-        "label": "doc — default features only",
+        "label": "doc - default features only",
         "command": "cargo",
         "args": [
             "doc",
@@ -424,7 +424,7 @@
     },
     // ── Maintenance ────────────────────────────────────────────────────────────
     {
-        "label": "clean — full target directory",
+        "label": "clean - full target directory",
         "command": "cargo",
         "args": [
             "clean"
@@ -434,7 +434,7 @@
         "reveal": "always"
     },
     {
-        "label": "clean — release profile only",
+        "label": "clean - release profile only",
         "command": "cargo",
         "args": [
             "clean",
@@ -445,7 +445,7 @@
         "reveal": "always"
     },
     {
-        "label": "update — Cargo.lock (dry run)",
+        "label": "update - Cargo.lock (dry run)",
         "command": "cargo",
         "args": [
             "update",
@@ -456,7 +456,7 @@
         "reveal": "always"
     },
     {
-        "label": "update — Cargo.lock (apply)",
+        "label": "update - Cargo.lock (apply)",
         "command": "cargo",
         "args": [
             "update"
