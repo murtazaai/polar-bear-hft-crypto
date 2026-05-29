@@ -13,13 +13,17 @@
 //! This is unique to Kraken and a common source of bugs when forward-engineering.
 //!
 //! ## Reference
-//! - https://docs.kraken.com/api/docs/guides/rest-authentication
+//! - '<https://docs.kraken.com/api/docs/guides/rest-authentication>'
 
-use crate::crypto::hmac::{hmac_sha256, hmac_sha512};
-use crate::exchange::auth::{ExchangeAuth, HmacCredentials, SignedRequest};
+use std::{collections::HashMap, fmt::Write};
+
 use anyhow::Result;
 use base64::{Engine, engine::general_purpose::STANDARD as B64};
-use std::collections::HashMap;
+
+use crate::{
+    crypto::hmac::{hmac_sha256, hmac_sha512},
+    exchange::auth::{ExchangeAuth, HmacCredentials, SignedRequest},
+};
 
 const BASE_URL: &str = "https://api.kraken.com";
 
@@ -48,18 +52,18 @@ impl KrakenAuth {
     /// Generate a Kraken nonce: microseconds since Unix epoch.
     fn nonce() -> String {
         let ts = chrono::Utc::now();
-        let micros = ts.timestamp() as u64 * 1_000_000 + ts.timestamp_subsec_micros() as u64;
+        let micros = ts.timestamp() as u64 * 1_000_000 + u64::from(ts.timestamp_subsec_micros());
         micros.to_string()
     }
 
     /// Build the Kraken API signature.
     ///
     /// Steps:
-    /// 1. sha256_hash = SHA-256(nonce || post_data)
-    /// 2. message     = url_path_bytes || sha256_hash
-    /// 3. key         = base64_decode(api_secret)
-    /// 4. signature   = HMAC-SHA512(key, message)
-    /// 5. return      = base64_encode(signature)
+    /// 1. `sha256_hash` = SHA-256(nonce || `post_data`)
+    /// 2. `message`     = `url_path_bytes` || `sha256_hash`
+    /// 3. `key`         = `base64_decode(api_secret)`
+    /// 4. `signature`   = HMAC-SHA512(`key`, `message`)
+    /// 5. `return`      = `base64_encode(signature)`
     fn build_signature(&self, url_path: &str, nonce: &str, post_data: &str) -> Result<String> {
         // Step 1: SHA-256(nonce + postData)
         let nonce_data = format!("{nonce}{post_data}");
@@ -111,7 +115,7 @@ impl ExchangeAuth for KrakenAuth {
             side.to_lowercase(),
         );
         if let Some(p) = price {
-            post_data.push_str(&format!("&price={p:.2}"));
+            let _ = write!(post_data, "&price={p:.2}");
         }
 
         let signature = self.build_signature(url_path, &nonce, &post_data)?;

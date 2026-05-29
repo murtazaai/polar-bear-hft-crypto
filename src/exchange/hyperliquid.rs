@@ -20,12 +20,16 @@
 //! ultimately signs raw bytes with Ed25519 rather than secp256k1 ECDSA.
 //!
 //! ## Reference
-//! - https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/signing
+//! - [`https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/signing`](https://hyperliquid.gitbook.io/hyperliquid-docs/for-developers/api/signing)
 
-use crate::crypto::ed25519::{Ed25519SignatureResult, Ed25519Signer};
-use crate::exchange::auth::{SignedRequest, timestamp_ms};
-use anyhow::Result;
 use std::collections::HashMap;
+
+use anyhow::Result;
+
+use crate::{
+    crypto::ed25519::{Ed25519SignatureResult, Ed25519Signer},
+    exchange::auth::{SignedRequest, timestamp_ms},
+};
 
 const BASE_URL: &str = "https://api.hyperliquid.xyz";
 
@@ -69,14 +73,12 @@ impl HyperliquidAuth {
     /// Load private key from `HYPERLIQUID_PRIVATE_KEY` env var (hex seed).
     /// Generates a random key in dry-run mode when env var is absent.
     pub fn from_env() -> Result<Self> {
-        let signer = match std::env::var("HYPERLIQUID_PRIVATE_KEY") {
-            Ok(hex) => Ed25519Signer::from_hex(&hex)?,
-            Err(_) => {
-                tracing::warn!("HYPERLIQUID_PRIVATE_KEY not set - using ephemeral dry-run key");
-                Ed25519Signer::generate()
-            }
-        };
-        Ok(Self::new(signer))
+        if let Ok(hex) = std::env::var("HYPERLIQUID_PRIVATE_KEY") {
+            Ok(Self::new(Ed25519Signer::from_hex(&hex)?))
+        } else {
+            tracing::warn!("HYPERLIQUID_PRIVATE_KEY not set - using ephemeral dry-run key");
+            Ok(Self::new(Ed25519Signer::generate()))
+        }
     }
 
     /// Public key hex (64 chars) - this is the Hyperliquid wallet address material.

@@ -96,9 +96,7 @@ impl HftAgent {
             .preamble(PREAMBLE)
             .build();
 
-        let price_str = price
-            .map(|p| format!("limit @ {p:.2}"))
-            .unwrap_or_else(|| "market".to_string());
+        let price_str = price.map_or_else(|| "market".to_string(), |p| format!("limit @ {p:.2}"));
 
         let prompt = format!(
             "Proposed trade: {side} {quantity} {symbol} ({price_str}) on {exchange}. \

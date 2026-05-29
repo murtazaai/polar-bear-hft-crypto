@@ -15,12 +15,16 @@
 //! - `OK-ACCESS-PASSPHRASE` : passphrase set at API key creation
 //!
 //! ## Reference
-//! - https://www.okx.com/docs-v5/en/#overview-rest-authentication
+//! - [`https://www.okx.com/docs-v5/en/#overview-rest-authentication`](https://www.okx.com/docs-v5/en/#overview-rest-authentication)
 
-use crate::crypto::hmac::hmac_sha256_base64;
-use crate::exchange::auth::{ExchangeAuth, SignedRequest, timestamp_iso8601};
-use anyhow::Result;
 use std::collections::HashMap;
+
+use anyhow::Result;
+
+use crate::{
+    crypto::hmac::hmac_sha256_base64,
+    exchange::auth::{ExchangeAuth, SignedRequest, timestamp_iso8601},
+};
 
 const BASE_URL: &str = "https://www.okx.com";
 

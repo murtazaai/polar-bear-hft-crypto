@@ -13,12 +13,16 @@
 //! 3. Set header `X-MBX-APIKEY: <apiKey>`
 //!
 //! ## Reference
-//! - https://binance-docs.github.io/apidocs/spot/en/#signed-trade-and-user_data-endpoint-security
+//! - [`https://binance-docs.github.io/apidocs/spot/en/#signed-trade-and-user_data-endpoint-security`](https://binance-docs.github.io/apidocs/spot/en/#signed-trade-and-user_data-endpoint-security)
 
-use crate::crypto::hmac::hmac_sha256_hex;
-use crate::exchange::auth::{ExchangeAuth, HmacCredentials, SignedRequest, timestamp_ms};
-use anyhow::Result;
 use std::collections::HashMap;
+
+use anyhow::Result;
+
+use crate::{
+    crypto::hmac::hmac_sha256_hex,
+    exchange::auth::{ExchangeAuth, HmacCredentials, SignedRequest, timestamp_ms},
+};
 
 const BASE_URL: &str = "https://api.binance.com";
 

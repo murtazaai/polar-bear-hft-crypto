@@ -14,12 +14,16 @@
 //! - `CB-ACCESS-TIMESTAMP`  : Unix seconds string
 //!
 //! ## Reference
-//! - https://docs.cdp.coinbase.com/advanced-trade/docs/rest-api-auth
+//! - [`https://docs.cdp.coinbase.com/advanced-trade/docs/rest-api-auth`](https://docs.cdp.coinbase.com/advanced-trade/docs/rest-api-auth)
 
-use crate::crypto::hmac::hmac_sha256_hex;
-use crate::exchange::auth::{ExchangeAuth, HmacCredentials, SignedRequest, timestamp_s};
-use anyhow::Result;
 use std::collections::HashMap;
+
+use anyhow::Result;
+
+use crate::{
+    crypto::hmac::hmac_sha256_hex,
+    exchange::auth::{ExchangeAuth, HmacCredentials, SignedRequest, timestamp_s},
+};
 
 const BASE_URL: &str = "https://api.coinbase.com";
 

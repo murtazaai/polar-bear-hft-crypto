@@ -1,7 +1,8 @@
 //! Shared authentication trait and request types used across all exchange modules.
 
-use anyhow::Result;
 use std::collections::HashMap;
+
+use anyhow::Result;
 
 /// A signed HTTP request ready to be dispatched.
 #[derive(Debug, Clone)]
@@ -84,13 +85,49 @@ impl HmacCredentials {
 }
 
 /// Returns current UTC timestamp in milliseconds.
+///
+/// # Example
+///
+/// ```rust
+/// use polar_bear_hft_crypto::exchange::auth::timestamp_ms;
+/// let ts = timestamp_ms();
+/// ```
+/// # Returns
+///
+/// The current UTC timestamp in milliseconds.
+///
+/// # Note
+///
+/// This function uses [`chrono::Utc::now`] to get the current timestamp.
+///
+/// # Panics
+///
+/// Panics if the timestamp cannot be converted to `u64`.
 pub fn timestamp_ms() -> u64 {
-    chrono::Utc::now().timestamp_millis() as u64
+    chrono::Utc::now().timestamp().try_into().unwrap()
 }
 
 /// Returns current UTC timestamp in seconds.
+///
+/// # Example
+///
+/// ```rust
+/// use polar_bear_hft_crypto::exchange::auth::timestamp_s;
+/// let ts = timestamp_s();
+/// ```
+/// # Returns
+///
+/// The current UTC timestamp in seconds.
+///
+/// # Note
+///
+/// This function uses [`chrono::Utc::now`] to get the current timestamp.
+///
+/// # Panics
+///
+/// Panics if the timestamp cannot be converted to `u64`.
 pub fn timestamp_s() -> u64 {
-    chrono::Utc::now().timestamp() as u64
+    chrono::Utc::now().timestamp().try_into().unwrap()
 }
 
 /// Returns ISO-8601 UTC timestamp string (OKX format).

@@ -16,12 +16,16 @@
 //! - `X-BAPI-RECV-WINDOW`   : recv window (milliseconds)
 //!
 //! ## Reference
-//! - https://bybit-exchange.github.io/docs/v5/guide
+//! - [`https://bybit-exchange.github.io/docs/v5/guide`](https://bybit-exchange.github.io/docs/v5/guide)
 
-use crate::crypto::hmac::hmac_sha256_hex;
-use crate::exchange::auth::{ExchangeAuth, HmacCredentials, SignedRequest, timestamp_ms};
-use anyhow::Result;
 use std::collections::HashMap;
+
+use anyhow::Result;
+
+use crate::{
+    crypto::hmac::hmac_sha256_hex,
+    exchange::auth::{ExchangeAuth, HmacCredentials, SignedRequest, timestamp_ms},
+};
 
 const BASE_URL: &str = "https://api.bybit.com";
 const RECV_WINDOW: &str = "5000";

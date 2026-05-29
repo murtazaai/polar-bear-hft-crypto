@@ -1,4 +1,4 @@
-//! # KuCoin REST API Authentication
+//! # `KuCoin` REST API Authentication
 //!
 //! ## Signing scheme (HMAC-SHA256 + base64 - with passphrase signing in V2)
 //!
@@ -17,27 +17,39 @@
 //! - `KC-API-KEY-VERSION`    : "2" (V2 passphrase signing)
 //!
 //! ## Reference
-//! - https://docs.kucoin.com/#authentication
+//! - '<https://docs.kucoin.com/#authentication>'
 
-use crate::crypto::hmac::hmac_sha256_base64;
-use crate::exchange::auth::{ExchangeAuth, SignedRequest, timestamp_ms};
-use anyhow::Result;
 use std::collections::HashMap;
 
+use anyhow::Result;
+
+/// Represents the `KuCoin` API credentials: key, secret, and passphrase.
+///
+/// V2 passphrase signing is used: the passphrase is itself HMAC-SHA256 signed with the API
+/// secret.
+use crate::{
+    crypto::hmac::hmac_sha256_base64,
+    exchange::auth::{ExchangeAuth, SignedRequest, timestamp_ms},
+};
+
+/// The base URL for the `KuCoin` API.
 const BASE_URL: &str = "https://api.kucoin.com";
 
-/// KuCoin API credentials: key, secret, and passphrase.
+/// `KuCoin` API credentials: key, secret, and passphrase.
 ///
 /// V2 passphrase signing is used: the passphrase is itself HMAC-SHA256 signed with the API secret.
 pub struct KuCoinCredentials {
-    /// The KuCoin API key.
+    /// The `KuCoin` API key.
     pub api_key: String,
-    /// The KuCoin API secret.
+    /// The `KuCoin` API secret.
     pub api_secret: String,
-    /// The KuCoin passphrase.
+    /// The `KuCoin` passphrase.
     pub passphrase: String,
 }
 
+/// `KuCoin` API credentials: key, secret, and passphrase.
+///
+/// V2 passphrase signing is used: the passphrase is itself HMAC-SHA256 signed with the API secret.
 impl KuCoinCredentials {
     /// Construct with explicit credentials.
     pub fn new(
@@ -54,6 +66,10 @@ impl KuCoinCredentials {
 
     /// Load credentials from `KUCOIN_API_KEY`, `KUCOIN_API_SECRET`, `KUCOIN_PASSPHRASE`
     /// environment variables. Falls back to dry-run placeholder values when vars are absent.
+    ///
+    /// # Returns
+    ///
+    /// A `KuCoinCredentials` struct with the loaded credentials.
     pub fn from_env() -> Self {
         Self::new(
             std::env::var("KUCOIN_API_KEY").unwrap_or_else(|_| "DRY_RUN_KEY".into()),
@@ -63,7 +79,7 @@ impl KuCoinCredentials {
     }
 }
 
-/// KuCoin authentication: HMAC-SHA256 with base64 encoding and V2 passphrase signing.
+/// `KuCoin` authentication: HMAC-SHA256 with base64 encoding and V2 passphrase signing.
 ///
 /// V2 passphrase: the passphrase is itself HMAC-SHA256 signed with the API secret,
 /// then base64-encoded, before being sent as `KC-API-PASSPHRASE`.

@@ -5,15 +5,15 @@
 //! HMAC-SHA256(key, message):
 //!   1. If |key| > 64: key = SHA-256(key)
 //!   2. If |key| < 64: pad key with 0x00 to 64 bytes
-//!   3. i_key_pad = key XOR (0x36 repeated × 64)   ← inner padding
-//!   4. o_key_pad = key XOR (0x5C repeated × 64)   ← outer padding
+//!   3. `i_key_pad` = key XOR (0x36 repeated × 64)   ← inner padding
+//!   4. `o_key_pad` = key XOR (0x5C repeated × 64)   ← outer padding
 //!   5. inner  = SHA-256(i_key_pad || message)
 //!   6. result = SHA-256(o_key_pad || inner)
 //!
 //! ## Why HMAC for exchange auth?
 //! - No asymmetric key pair needed: both sides share a secret (API secret)
 //! - Computationally infeasible to forge without the secret
-//! - Standard across Binance, OKX, Bybit, Coinbase, KuCoin REST APIs
+//! - Standard across Binance, OKX, Bybit, Coinbase, `KuCoin` REST APIs
 //! - HMAC-SHA512 variant used by Kraken for extra margin
 
 use anyhow::{Result, anyhow};
@@ -39,7 +39,7 @@ pub fn hmac_sha256_hex(key: &[u8], message: &[u8]) -> Result<String> {
 }
 
 /// Compute HMAC-SHA256 and return the standard base64 string.
-/// Used by KuCoin and Coinbase Advanced Trade.
+/// Used by `KuCoin` and Coinbase Advanced Trade.
 pub fn hmac_sha256_base64(key: &[u8], message: &[u8]) -> Result<String> {
     Ok(B64.encode(hmac_sha256(key, message)?))
 }

@@ -72,6 +72,17 @@ impl Ed25519Signer {
     }
 
     /// Restore from a 32-byte hex-encoded seed.
+    ///
+    /// # Errors
+    /// Returns an error if the hex string is not 64 characters long or contains invalid characters.
+    ///
+    /// # Panics
+    /// Panics if the hex string is not 64 characters long or contains invalid characters.
+    ///
+    /// # Examples
+    /// ```
+    /// let signer = Ed25519Signer::from_hex("0x...").unwrap();
+    /// ```
     pub fn from_hex(hex_str: &str) -> Result<Self> {
         let bytes = hex::decode(hex_str).map_err(|e| anyhow!("hex decode: {e}"))?;
         if bytes.len() != 32 {
