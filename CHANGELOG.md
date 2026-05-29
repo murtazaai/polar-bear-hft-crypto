@@ -10,6 +10,17 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [0.3.1] - 2026-05-29
+
+### Fixed
+- **Fix 6** - `examples/agent_demo.rs`: `HftAgent::new()` returns `Result<Self>` — added `.expect(...)` unwrap. Removed broken `.expect("").await` chain that called `.expect` on a `Future` instead of the `Result` (compile error with `ai-agent` feature).
+- **Fix 7** - `tests/providers/anthropic.rs`: same `HftAgent::new()` `Result` unwrap missing in all three `#[ignore]` live-provider tests (compile error with `ai-agent` feature).
+- **Fix 8** - `src/exchange/bybit.rs`: `from_env` doctest used wrong module path `exchange::BybitAuth` (no re-export at that level); corrected to `exchange::bybit::BybitAuth`. Removed orphan inline comment in `from_env` body.
+- **Fix 9** - `src/exchange/coinbase.rs`, `kraken.rs`, `bybit.rs`: removed duplicate/orphan impl-level doc blocks that mirrored struct-level docs verbatim; cleaned up `new`/`from_env` doc comments.
+- **Fix 10** - `src/exchange/auth.rs`: removed `std::env::set_var` from runnable doctest on `HmacCredentials::from_env`; changed to `no_run`. `set_var` in multithreaded doctests is unsound in Rust 2024 and fails `cargo doc -D warnings` in CI.
+
+---
+
 ## [0.3.0] - 2026-05-29
 
 ### Changed

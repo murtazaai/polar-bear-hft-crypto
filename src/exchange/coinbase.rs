@@ -36,38 +36,14 @@ pub struct CoinbaseAuth {
     creds: HmacCredentials,
 }
 
-/// Authenticates with the Coinbase Advanced Trade REST API using HMAC-SHA256.
-///
-/// # Example
-///
-/// ```rust,no_run
-/// use polar_bear_hft_crypto::exchange::CoinbaseAuth;
-///
-/// let auth = CoinbaseAuth::from_env().unwrap();
-/// ```
 impl CoinbaseAuth {
-    /// Creates a new `CoinbaseAuth` instance with the given credentials.
-    ///
-    /// # Arguments
-    ///
-    /// * `creds` - The credentials to use for authentication.
-    ///
-    /// # Returns
-    ///
-    /// A new `CoinbaseAuth` instance.
+    /// Construct with explicit HMAC credentials.
     pub fn new(creds: HmacCredentials) -> Self {
         Self { creds }
     }
 
-    /// Creates a new `CoinbaseAuth` instance from environment variables.
-    ///
-    /// # Returns
-    ///
-    /// A new `CoinbaseAuth` instance.
-    ///
-    /// # Errors
-    ///
-    /// Returns an error if the environment variables are not set.
+    /// Construct from `COINBASE_API_KEY` / `COINBASE_API_SECRET` environment variables.
+    /// Falls back to dry-run placeholder values when env vars are absent.
     pub fn from_env() -> Result<Self> {
         Ok(Self::new(HmacCredentials::from_env(
             "COINBASE_API_KEY",

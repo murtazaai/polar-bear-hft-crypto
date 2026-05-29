@@ -101,3 +101,74 @@ mechanism for loading a `.env` file in development. Adding `dotenvy` aligns with
 and allows `dotenvy::dotenv().ok()` to be called at startup.
 
 **Fix**: Added `dotenvy = "^0.15"` to `[dependencies]`.
+
+---
+
+## Fix 6 - `HftAgent::new()` called without `Result` unwrap in `examples/agent_demo.rs`
+
+**File**: `examples/agent_demo.rs`
+
+**Root Cause**: `HftAgent::new()` returns `Result<Self>`, but the call site was
+`let agent = HftAgent::new();` (binding to `Result<HftAgent>`) followed immediately by
+`agent.analyse_trade(...).expect("").await` — calling `.expect("")` on the `Future` returned
+by `analyse_trade`, not on the `Result` from `new()`. This produces a type-error at compile
+time: `.expect()` is not a method on `impl Future`.
+
+**Fix**: Changed to `HftAgent::new().expect("Failed to initialise HftAgent: check ANTHROPIC_API_KEY")`
+and removed the erroneous `.expect("").await` chain — `analyse_trade` is called directly with `.await`.
+
+---
+
+## Fix 7 - `HftAgent::new()` called without `Result` unwrap in `tests/providers/anthropic.rs`
+
+**File**: `tests/providers/anthropic.rs`
+
+**Root Cause**: Same pattern — `let agent = HftAgent::new();` in all three `#[ignore]`
+live-provider test functions. The `Result<HftAgent>` value was used as if it were `HftAgent`,
+causing a compile error when the `ai-agent` feature is enabled.
+
+**Fix**: Changed all three sites to `HftAgent::new().expect("HftAgent::new failed")`.
+
+---
+
+## Fix 8 - Wrong module path in `bybit.rs` `from_env` doctest
+
+**File**: `src/exchange/bybit.rs`
+
+**Root Cause**: The `from_env` doc example used
+`use polar_bear_hft_crypto::exchange::BybitAuth` — there is no re-export of `BybitAuth`
+at the `exchange` module level. The correct path is `exchange::bybit::BybitAuth`.
+`cargo doc -D warnings` would fail with a broken intra-doc link error.
+
+**Fix**: Corrected to `use polar_bear_hft_crypto::exchange::bybit::BybitAuth`.
+Also removed a leftover `// Load credentials…` inline comment from `from_env` body.
+
+---
+
+## Fix 9 - Duplicate / orphan impl-level doc blocks on `CoinbaseAuth`, `KrakenAuth`, `BybitAuth`
+
+**Files**: `src/exchange/coinbase.rs`, `src/exchange/kraken.rs`, `src/exchange/bybit.rs`
+
+**Root Cause**: Each `impl` block carried a full `///` doc comment block that exactly
+duplicated the struct-level doc comment already present above the `struct` definition.
+rustdoc attaches impl-block docs nowhere useful (they are silently dropped), but they
+create noise and can carry broken example links that trigger `-D warnings` failures.
+`kraken.rs` also had an example that imported `KrakenAuth` without a `use` statement.
+
+**Fix**: Removed all three orphan impl-level doc blocks. Cleaned up `new`/`from_env`
+doc comments to single-purpose prose with correct paths.
+
+---
+
+## Fix 10 - `std::env::set_var` in runnable doctest (`auth.rs`)
+
+**File**: `src/exchange/auth.rs`
+
+**Root Cause**: The doctest on `HmacCredentials::from_env` called `std::env::set_var`
+inside a runnable (non-`no_run`) doctest. In Rust 2024, `set_var` is considered unsound
+in multithreaded contexts and triggers `clippy::unsound_collection_transmute` / lint
+warnings. More practically, `cargo test --doc` in CI may run doctests in parallel,
+making the env mutation a data race. Under `-D warnings` this fails the doc CI gate.
+
+**Fix**: Changed the doctest to `no_run` and removed the `set_var` calls.
+Added a prose note explaining the env var requirements.

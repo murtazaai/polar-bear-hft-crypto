@@ -40,25 +40,8 @@ pub struct BybitAuth {
     creds: HmacCredentials,
 }
 
-/// Authenticates with the Bybit API using an API key and secret.
-///
-/// # Example
-///
-/// ```rust,no_run
-/// use polar_bear_hft_crypto::exchange::bybit::BybitAuth;
-///
-/// let auth = BybitAuth::from_env().unwrap();
-/// ```
 impl BybitAuth {
-    /// Creates a new `BybitAuth` instance with the given credentials.
-    ///
-    /// # Arguments
-    ///
-    /// * `creds` - The credentials for the Bybit API.
-    ///
-    /// # Returns
-    ///
-    /// A new `BybitAuth` instance.
+    /// Construct with explicit HMAC credentials.
     pub fn new(creds: HmacCredentials) -> Self {
         Self { creds }
     }
@@ -76,12 +59,11 @@ impl BybitAuth {
     /// # Example
     ///
     /// ```rust,no_run
-    /// use polar_bear_hft_crypto::exchange::BybitAuth;
+    /// use polar_bear_hft_crypto::exchange::bybit::BybitAuth;
     ///
     /// let auth = BybitAuth::from_env().unwrap();
     /// ```
     pub fn from_env() -> Result<Self> {
-        // Load credentials from environment variables and create a new `BybitAuth` instance.
         Ok(Self::new(HmacCredentials::from_env(
             "BYBIT_API_KEY",
             "BYBIT_API_SECRET",

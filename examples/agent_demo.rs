@@ -47,7 +47,7 @@ async fn main() -> anyhow::Result<()> {
     println!("╚══════════════════════════════════════════════════════════════════╝");
     println!();
 
-    let agent = HftAgent::new();
+    let agent = HftAgent::new().expect("Failed to initialise HftAgent: check ANTHROPIC_API_KEY");
 
     // Analyse several trade scenarios
     let scenarios = [
@@ -65,7 +65,6 @@ async fn main() -> anyhow::Result<()> {
 
         match agent
             .analyse_trade(symbol, side, *qty, *price, exchange)
-            .expect("")
             .await
         {
             Ok(response) => {

@@ -65,11 +65,14 @@ impl HmacCredentials {
 
     /// Load from environment variables.
     ///
+    /// Reads `key_var` and `secret_var` from the process environment.
+    /// Falls back to a dry-run placeholder string when a variable is absent —
+    /// this method is infallible by design so the binary always starts.
+    ///
     /// # Example
-    /// ```
+    /// ```rust,no_run
     /// use polar_bear_hft_crypto::exchange::auth::HmacCredentials;
-    /// std::env::set_var("BINANCE_API_KEY", "test-key");
-    /// std::env::set_var("BINANCE_API_SECRET", "test-secret");
+    /// // BINANCE_API_KEY / BINANCE_API_SECRET must be set in the environment.
     /// let creds = HmacCredentials::from_env("BINANCE_API_KEY", "BINANCE_API_SECRET").unwrap();
     /// ```
     pub fn from_env(key_var: &str, secret_var: &str) -> Result<Self> {

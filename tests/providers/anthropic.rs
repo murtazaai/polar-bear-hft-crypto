@@ -18,7 +18,7 @@ mod agent_tests {
     #[tokio::test]
     #[ignore = "requires ANTHROPIC_API_KEY and --features ai-agent"]
     async fn test_live_agent_returns_valid_json() {
-        let agent = HftAgent::new();
+        let agent = HftAgent::new().expect("HftAgent::new failed");
         let response = agent
             .analyse_trade("BTC/USDT", "buy", 0.001, Some(65_000.0), "Binance")
             .await
@@ -49,7 +49,7 @@ mod agent_tests {
     #[tokio::test]
     #[ignore = "requires ANTHROPIC_API_KEY and --features ai-agent"]
     async fn test_live_agent_action_is_valid_enum() {
-        let agent = HftAgent::new();
+        let agent = HftAgent::new().expect("HftAgent::new failed");
         let response = agent
             .analyse_trade("ETH/USDC", "sell", 1.5, Some(3_200.0), "Hyperliquid")
             .await
@@ -67,7 +67,7 @@ mod agent_tests {
     #[tokio::test]
     #[ignore = "requires ANTHROPIC_API_KEY and --features ai-agent"]
     async fn test_live_agent_risk_level_is_valid_enum() {
-        let agent = HftAgent::new();
+        let agent = HftAgent::new().expect("HftAgent::new failed");
         let response = agent
             .analyse_trade("SOL/USDT", "buy", 10.0, None, "OKX")
             .await
