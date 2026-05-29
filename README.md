@@ -6,7 +6,7 @@ ECDSA / Ed25519 forward-engineering · 7-exchange API authentication · Rig (ARC
 [![Rust](https://img.shields.io/badge/rust-1.93.1+-orange)](https://www.rust-lang.org/)
 [![Edition](https://img.shields.io/badge/Edition-2024-blue)](https://doc.rust-lang.org/edition-guide/)
 [![rig-core](https://img.shields.io/badge/rig--core-0.37-purple)](https://rig.rs)
-[![License: PBS](https://img.shields.io/badge/license-PBS-blue)](LICENSE-PBS)
+[![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue)](LICENSE-MIT)
 
 > Built by **[Murtaza Ali Imtiaz](https://github.com/murtazaai)** · Technology Lead · Polar Bear Systems · July 2019–Present
 
@@ -279,8 +279,14 @@ cargo run --example agent_demo --features ai-agent
 
 ## License
 
-Proprietary - © 2026 Murtaza Ali Imtiaz / Polar Bear Systems  
-See [LICENSE-PBS](LICENSE-PBS) for permitted use.
+Licensed under either of:
+
+- [MIT License](LICENSE-MIT)
+- [Apache License, Version 2.0](LICENSE-APACHE)
+
+at your option.
+
+© 2026 Murtaza Ali Imtiaz / Polar Bear Systems
 
 ---
 

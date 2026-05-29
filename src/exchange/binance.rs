@@ -24,18 +24,7 @@ const BASE_URL: &str = "https://api.binance.com";
 
 /// Binance authentication using HMAC-SHA256.
 ///
-/// # Example
-///
-/// ```rust
-/// use polar_bear_hft_crypto::exchange::binance::BinanceAuth;
-///
-/// let auth = BinanceAuth::from_env().unwrap();
-/// ```
-pub struct BinanceAuth {
-    creds: HmacCredentials,
-}
-
-/// Creates a new [`BinanceAuth`] instance from the environment variables `BINANCE_API_KEY` and `BINANCE_API_SECRET`.
+/// Signs orders and balance queries per the Binance Spot REST API v3 specification.
 ///
 /// # Example
 ///
@@ -44,21 +33,18 @@ pub struct BinanceAuth {
 ///
 /// let auth = BinanceAuth::from_env().unwrap();
 /// ```
+pub struct BinanceAuth {
+    creds: HmacCredentials,
+}
+
 impl BinanceAuth {
-    /// Creates a new [`BinanceAuth`] instance from the environment variables `BINANCE_API_KEY` and `BINANCE_API_SECRET`.
-    ///
-    /// # Example
-    ///
-    /// ```rust,no_run
-    /// use polar_bear_hft_crypto::exchange::binance::BinanceAuth;
-    ///
-    /// let auth = BinanceAuth::from_env().unwrap();
-    /// ```
+    /// Construct with explicit HMAC credentials.
     pub fn new(creds: HmacCredentials) -> Self {
         Self { creds }
     }
 
-    /// Creates a new [`BinanceAuth`] instance from the environment variables `BINANCE_API_KEY` and `BINANCE_API_SECRET`.
+    /// Construct from `BINANCE_API_KEY` / `BINANCE_API_SECRET` environment variables.
+    /// Falls back to dry-run placeholder values when env vars are absent.
     ///
     /// # Example
     ///

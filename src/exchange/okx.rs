@@ -24,13 +24,7 @@ use std::collections::HashMap;
 
 const BASE_URL: &str = "https://www.okx.com";
 
-/// OKX credentials.
-///
-/// # Examples
-///
-/// ```
-/// let creds = OkxCredentials::new("api_key", "api_secret", "passphrase");
-/// ```
+/// OKX API credentials: key, secret, and trading passphrase.
 #[derive(Clone)]
 pub struct OkxCredentials {
     /// API key.
@@ -41,31 +35,11 @@ pub struct OkxCredentials {
     pub passphrase: String,
 }
 
-/// OKX authentication.
-///
-/// # Examples
-///
-/// ```
-/// let creds = OkxCredentials::new("api_key", "api_secret", "passphrase");
-/// ```
 impl OkxCredentials {
     /// Creates a new [`OkxCredentials`] instance.
-    ///
-    /// # Arguments
-    ///
-    /// * `api_key` - API key.
-    /// * `api_secret` - API secret.
-    /// * `passphrase` - Passphrase.
-    ///
-    /// # Returns
-    ///
-    /// A new [`OkxCredentials`] instance.
     pub fn new(
-        // API key.
         api_key: impl Into<String>,
-        // API secret.
         api_secret: impl Into<String>,
-        // Passphrase.
         passphrase: impl Into<String>,
     ) -> Self {
         Self {
@@ -75,33 +49,9 @@ impl OkxCredentials {
         }
     }
 
-    /// Creates a new [`OkxCredentials`] instance from environment variables.
-    ///
-    /// # Returns
-    ///
-    /// A new [`OkxCredentials`] instance.
-    ///
-    /// # Panics
-    ///
-    /// Panics if the environment variables are not set.
-    ///
-    /// # Environment Variables
-    ///
-    /// * `OKX_API_KEY` - API key.
-    /// * `OKX_API_SECRET` - API secret.
-    /// * `OKX_PASSPHRASE` - Passphrase.
-    ///
-    /// # Default Values
-    ///
-    /// * `DRY_RUN_KEY` - API key.
-    /// * `dry-run-secret` - API secret.
-    /// * `dry-run-passphrase` - Passphrase.
+    /// Load credentials from `OKX_API_KEY`, `OKX_API_SECRET`, `OKX_PASSPHRASE` environment
+    /// variables. Falls back to dry-run placeholder values when vars are absent.
     pub fn from_env() -> Self {
-        // Creates a new [`OkxCredentials`] instance from environment variables.
-        //
-        // # Panics
-        //
-        // Panics if the environment variables are not set.
         Self::new(
             std::env::var("OKX_API_KEY").unwrap_or_else(|_| "DRY_RUN_KEY".into()),
             std::env::var("OKX_API_SECRET").unwrap_or_else(|_| "dry-run-secret".into()),
@@ -110,39 +60,21 @@ impl OkxCredentials {
     }
 }
 
-/// Authenticates with the OKX API using the provided credentials.
+/// OKX authentication: signs REST requests with HMAC-SHA256 + ISO-8601 timestamp.
 ///
 /// # Example
 ///
-/// ```
-/// use polar_bear_hft_crypto::exchange::okx::OkxAuth;
+/// ```rust,no_run
+/// use polar_bear_hft_crypto::exchange::okx::{OkxAuth, OkxCredentials};
 ///
 /// let auth = OkxAuth::new(OkxCredentials::from_env());
 /// ```
 pub struct OkxAuth {
-    /// The credentials used to authenticate with the OKX API.
     creds: OkxCredentials,
 }
 
-/// Authenticates with the OKX API using the provided credentials.
-///
-/// # Example
-///
-/// ```
-/// use polar_bear_hft_crypto::exchange::okx::OkxAuth;
-///
-/// let auth = OkxAuth::new(OkxCredentials::from_env());
-/// ```
 impl OkxAuth {
-    /// Creates a new `OkxAuth` instance with the provided credentials.
-    ///
-    /// # Arguments
-    ///
-    /// * `creds` - The credentials used to authenticate with the OKX API.
-    ///
-    /// # Returns
-    ///
-    /// A new `OkxAuth` instance.
+    /// Construct with explicit credentials.
     pub fn new(creds: OkxCredentials) -> Self {
         Self { creds }
     }

@@ -26,21 +26,9 @@ use std::collections::HashMap;
 
 const BASE_URL: &str = "https://api.kucoin.com";
 
-/// KuCoin credentials for authentication.
+/// KuCoin API credentials: key, secret, and passphrase.
 ///
-/// # Examples
-///
-/// ```
-/// let creds = KuCoinCredentials::new("my-api-key", "my-api-secret", "my-passphrase");
-/// ```
-///
-/// ```
-/// let creds = KuCoinCredentials::from_env();
-/// ```
-///
-/// # Errors
-///
-/// Returns an error if the environment variables are not set.
+/// V2 passphrase signing is used: the passphrase is itself HMAC-SHA256 signed with the API secret.
 pub struct KuCoinCredentials {
     /// The KuCoin API key.
     pub api_key: String,
@@ -51,35 +39,10 @@ pub struct KuCoinCredentials {
 }
 
 impl KuCoinCredentials {
-    /// Creates a new KuCoinCredentials instance.
-    ///
-    /// # Arguments
-    ///
-    /// * `api_key` - The KuCoin API key.
-    /// * `api_secret` - The KuCoin API secret.
-    /// * `passphrase` - The KuCoin passphrase.
-    ///
-    /// # Returns
-    ///
-    /// A new KuCoinCredentials instance.
-    ///
-    /// # Panics
-    ///
-    /// Panics if the environment variables are not set.
-    ///
-    /// # Returns
-    ///
-    /// A new KuCoinCredentials instance.
-    ///
-    /// # Panics
-    ///
-    /// Panics if the environment variables are not set.
+    /// Construct with explicit credentials.
     pub fn new(
-        // The KuCoin API key.
         api_key: impl Into<String>,
-        // The KuCoin API secret.
         api_secret: impl Into<String>,
-        // The KuCoin passphrase.
         passphrase: impl Into<String>,
     ) -> Self {
         Self {
@@ -89,19 +52,9 @@ impl KuCoinCredentials {
         }
     }
 
-    /// Creates a new KuCoinCredentials instance from the environment variables.
-    ///
-    /// # Returns
-    ///
-    /// A new KuCoinCredentials instance.
-    ///
-    /// # Panics
-    ///
-    /// Panics if the environment variables are not set.
+    /// Load credentials from `KUCOIN_API_KEY`, `KUCOIN_API_SECRET`, `KUCOIN_PASSPHRASE`
+    /// environment variables. Falls back to dry-run placeholder values when vars are absent.
     pub fn from_env() -> Self {
-        // Loads the KuCoin API key, secret, and passphrase from the environment variables.
-        // If the environment variables are not set, a default value is used instead.
-        // This is useful for local development and testing without setting up environment variables.
         Self::new(
             std::env::var("KUCOIN_API_KEY").unwrap_or_else(|_| "DRY_RUN_KEY".into()),
             std::env::var("KUCOIN_API_SECRET").unwrap_or_else(|_| "dry-run-secret".into()),
@@ -110,38 +63,24 @@ impl KuCoinCredentials {
     }
 }
 
-/// Authenticates with the KuCoin API using the provided credentials.
+/// KuCoin authentication: HMAC-SHA256 with base64 encoding and V2 passphrase signing.
 ///
-/// This struct holds the credentials and provides methods for signing requests to the KuCoin API.
-///
-/// # Examples
-///
-/// ```
-/// let auth = KuCoinAuth::from_env();
-/// ```
+/// V2 passphrase: the passphrase is itself HMAC-SHA256 signed with the API secret,
+/// then base64-encoded, before being sent as `KC-API-PASSPHRASE`.
 pub struct KuCoinAuth {
-    /// The KuCoin credentials.
     creds: KuCoinCredentials,
 }
 
 impl KuCoinAuth {
-    /// Creates a new KuCoinAuth instance with the provided credentials.
+    /// Construct with explicit credentials.
     ///
-    /// # Arguments
-    ///
-    /// * `creds` - The KuCoin credentials.
-    ///
-    /// # Returns
-    ///
-    /// A new KuCoinAuth instance.
-    ///
-    /// # Examples
+    /// # Example
     ///
     /// ```
+    /// use polar_bear_hft_crypto::exchange::kucoin::{KuCoinAuth, KuCoinCredentials};
     /// let auth = KuCoinAuth::new(KuCoinCredentials::new("api_key", "api_secret", "passphrase"));
     /// ```
     pub fn new(creds: KuCoinCredentials) -> Self {
-        // Validate the credentials.
         Self { creds }
     }
 

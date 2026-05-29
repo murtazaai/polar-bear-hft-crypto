@@ -10,6 +10,25 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ---
 
+## [0.3.0] - 2026-05-29
+
+### Changed
+- `Cargo.toml` - license changed from proprietary `LicensePBS` to `MIT OR Apache-2.0` (valid SPDX) for crates.io publication
+- `README.md` - updated license badge and License section to reflect dual MIT/Apache-2.0 licensing
+
+### Added
+- `LICENSE-MIT` - MIT license text
+- `LICENSE-APACHE` - Apache License 2.0 text
+- `tests/providers/mod.rs` - module file making `tests/providers/anthropic.rs` discoverable by the test harness
+
+### Fixed
+- `src/exchange/binance.rs` - removed triplicated copy-paste doc comments on `BinanceAuth::new` and `from_env`; impl-level doc block removed (duplicated struct-level doc)
+- `src/exchange/okx.rs` - removed redundant impl-level doc block on `OkxCredentials` and `OkxAuth`; cleaned up inline comments inside function parameter lists (non-standard Rust style)
+- `src/exchange/kucoin.rs` - same doc comment cleanup as okx.rs; removed duplicate `# Panics` sections and inline parameter comments
+- `.zed/settings.json` - removed `"git"` block (global-only Zed setting; rejected by schema at project level per Zed docs); moved note directing to `~/.config/zed/settings.json`
+
+---
+
 ## [0.2.0] - 2026-05-16
 
 ### Added

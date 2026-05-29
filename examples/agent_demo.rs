@@ -65,6 +65,7 @@ async fn main() -> anyhow::Result<()> {
 
         match agent
             .analyse_trade(symbol, side, *qty, *price, exchange)
+            .expect("")
             .await
         {
             Ok(response) => {

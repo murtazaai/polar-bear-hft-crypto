@@ -1,11 +1,11 @@
 [package]
 name        = "polar-bear-hft-crypto"
-version     = "0.2.0"
+version     = "0.3.0"
 edition     = "2024"
 rust-version = "1.93.1"
 authors     = ["Murtaza Ali Imtiaz <very.kool.king@gmail.com>"]
 description = "Cryptographic signing layer for high-frequency trading: ECDSA/Ed25519 forward-engineering + 7-exchange API authentication"
-license     = "LicensePBS"
+license     = "MIT OR Apache-2.0"
 repository  = "https://github.com/murtazaai/polar-bear-hft-crypto"
 keywords    = ["hft", "crypto", "ecdsa", "ed25519", "defi"]
 categories  = ["cryptography", "finance", "algorithms"]
