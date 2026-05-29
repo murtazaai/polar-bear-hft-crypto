@@ -4,8 +4,8 @@
 //!
 //! ### Domain parameters (Ed25519)
 //! - Prime field:  p = 2²⁵⁵ − 19
-//! - Curve:        −x² + y² ≡ 1 + d·x²·y²  (mod p)   ← Twisted Edwards form
-//!   where d = −121665/121666 mod p
+//! - Curve:        −x² + y² ≡ 1 + d·x²·y²  (mod p)   ← Twisted Edwards form where d =
+//!   −121665/121666 mod p
 //! - Base point:   B  (the unique point with y = 4/5 mod p, x > 0)
 //! - Order:        ℓ = 2²⁵² + 27742317777372353535851937790883648493
 //! - Cofactor:     h = 8
@@ -33,12 +33,12 @@
 //! 3. Valid iff  8·S·B == 8·R + 8·k·A
 //!
 //! ### Why Ed25519 for HFT?
-//! - **Deterministic**: no per-signature randomness → no random-number-generator
-//!   side-channel attacks (critical in co-location environments)
+//! - **Deterministic**: no per-signature randomness → no random-number-generator side-channel
+//!   attacks (critical in co-location environments)
 //! - **Fast**: ~10× faster signing than ECDSA secp256k1 on the same hardware
 //! - **Compact**: 64-byte signatures, 32-byte public keys
-//! - **Collision resistant**: signing hash includes the nonce prefix, preventing
-//!   fault attacks that break ECDSA when k is reused
+//! - **Collision resistant**: signing hash includes the nonce prefix, preventing fault attacks that
+//!   break ECDSA when k is reused
 //! - Hyperliquid and Solana use Ed25519 as their native signing algorithm
 
 use anyhow::{Result, anyhow};
@@ -50,6 +50,14 @@ pub struct Ed25519Signer {
     signing_key: SigningKey,
 }
 
+/// A wrapper around an Ed25519 signing key that provides deterministic signing.
+///
+/// # Examples
+/// ```
+/// use polar_bear_hft_crypto::crypto::ed25519::Ed25519Signer;
+///
+/// let signer = Ed25519Signer::generate();
+/// ```
 impl Ed25519Signer {
     /// Generate a cryptographically random Ed25519 signing key.
     pub fn generate() -> Self {
@@ -101,6 +109,14 @@ impl Ed25519Signer {
     // ── Signing ────────────────────────────────────────────────────────────
 
     /// Sign arbitrary bytes.  Returns a 64-byte signature.
+    ///
+    /// # Examples
+    /// ```
+    /// use polar_bear_hft_crypto::crypto::ed25519::Ed25519Signer;
+    ///
+    /// let signer = Ed25519Signer::generate();
+    /// let signature = signer.sign(b"hello world");
+    /// ```
     pub fn sign(&self, message: &[u8]) -> Ed25519SignatureResult {
         let signature: Signature = self.signing_key.sign(message);
         Ed25519SignatureResult {
@@ -111,6 +127,17 @@ impl Ed25519Signer {
     }
 
     /// Sign a UTF-8 string.
+    ///
+    /// # Examples
+    /// ```
+    /// use polar_bear_hft_crypto::crypto::ed25519::Ed25519Signer;
+    ///
+    /// let signer = Ed25519Signer::generate();
+    /// let signature = signer.sign_str("hello world");
+    /// ```
+    ///
+    /// Returns a [`Ed25519SignatureResult`] containing the signature bytes and hex-encoded
+    /// signature.
     pub fn sign_str(&self, message: &str) -> Ed25519SignatureResult {
         self.sign(message.as_bytes())
     }
@@ -118,6 +145,15 @@ impl Ed25519Signer {
     // ── Verification ───────────────────────────────────────────────────────
 
     /// Verify a signature against this key's public component.
+    ///
+    /// # Examples
+    /// ```
+    /// use polar_bear_hft_crypto::crypto::ed25519::Ed25519Verifier;
+    ///
+    /// let verifier = Ed25519Verifier::from_hex("").unwrap();
+    /// let result = verifier.verify(b"hello world", "");
+    /// assert!(result.unwrap());
+    /// ```
     pub fn verify(&self, message: &[u8], signature_hex: &str) -> Result<bool> {
         let sig_bytes = hex::decode(signature_hex).map_err(|e| anyhow!("hex decode: {e}"))?;
         let sig_arr: [u8; 64] = sig_bytes
@@ -130,12 +166,38 @@ impl Ed25519Signer {
 }
 
 /// Standalone Ed25519 verifier - receives only the public key.
+///
+/// # Examples
+/// ```
+/// use polar_bear_hft_crypto::crypto::ed25519::Ed25519Verifier;
+///
+/// let verifier = Ed25519Verifier::from_hex("").unwrap();
+/// let result = verifier.verify(b"hello world", "");
+/// assert!(result.unwrap());
+/// ```
 pub struct Ed25519Verifier {
     verifying_key: VerifyingKey,
 }
 
+/// Standalone Ed25519 verifier - receives only the public key.
+///
+/// # Examples
+/// ```
+/// use polar_bear_hft_crypto::crypto::ed25519::Ed25519Verifier;
+///
+/// let verifier = Ed25519Verifier::from_hex("").unwrap();
+/// let result = verifier.verify(b"hello world", "");
+/// assert!(result.unwrap());
+/// ```
 impl Ed25519Verifier {
     /// Construct from a 32-byte hex-encoded public key.
+    ///
+    /// # Arguments
+    /// * `hex_str` - A hex-encoded string representing the public key.
+    ///
+    /// # Returns
+    /// * `Ok(Self)` - The constructed verifier.
+    /// * `Err(anyhow::Error)` - If the hex string is invalid or the key is not 32 bytes.
     pub fn from_hex(hex_str: &str) -> Result<Self> {
         let bytes = hex::decode(hex_str).map_err(|e| anyhow!("hex decode: {e}"))?;
         let arr: [u8; 32] = bytes
@@ -147,6 +209,14 @@ impl Ed25519Verifier {
     }
 
     /// Verify a (message, signature) pair.
+    ///
+    /// # Arguments
+    /// * `message` - The message to verify.
+    /// * `signature_hex` - A hex-encoded string representing the signature.
+    ///
+    /// # Returns
+    /// * `Ok(bool)` - `true` if the signature is valid, `false` otherwise.
+    /// * `Err(anyhow::Error)` - If the signature is invalid or the hex string is invalid.
     pub fn verify(&self, message: &[u8], signature_hex: &str) -> Result<bool> {
         let sig_bytes = hex::decode(signature_hex).map_err(|e| anyhow!("hex decode: {e}"))?;
         let sig_arr: [u8; 64] = sig_bytes
@@ -158,6 +228,15 @@ impl Ed25519Verifier {
 }
 
 /// Result of an Ed25519 signing operation.
+///
+/// # Examples
+/// ```
+/// use polar_bear_hft_crypto::crypto::ed25519::Ed25519SignatureResult;
+///
+/// let result = Ed25519SignatureResult::default();
+/// assert_eq!(result.signature_bytes.len(), 64);
+/// assert_eq!(result.signature_hex.len(), 128);
+/// ```
 #[derive(Debug, Clone, serde::Serialize)]
 pub struct Ed25519SignatureResult {
     /// Raw 64-byte signature (R || S).
@@ -168,10 +247,30 @@ pub struct Ed25519SignatureResult {
     pub message_len: usize,
 }
 
+/// Tests for the Ed25519 signature result.
+///
+/// # Examples
+/// ```
+/// use polar_bear_hft_crypto::crypto::ed25519::Ed25519SignatureResult;
+///
+/// let result = Ed25519SignatureResult::default();
+/// assert_eq!(result.signature_bytes.len(), 64);
+/// assert_eq!(result.signature_hex.len(), 128);
+/// ```
 #[cfg(test)]
 mod tests {
     use super::*;
 
+    /// Tests that the signature result contains the expected signature bytes and hex string.
+    ///
+    /// # Examples
+    /// ```
+    /// use polar_bear_hft_crypto::crypto::ed25519::Ed25519SignatureResult;
+    ///
+    /// let result = Ed25519SignatureResult::default();
+    /// assert_eq!(result.signature_bytes.len(), 64);
+    /// assert_eq!(result.signature_hex.len(), 128);
+    /// ```
     #[test]
     fn generate_sign_verify_roundtrip() {
         let signer = Ed25519Signer::generate();
@@ -185,6 +284,16 @@ mod tests {
         assert!(valid);
     }
 
+    /// Tests that the signature result contains the expected signature bytes and hex string.
+    ///
+    /// # Examples
+    /// ```
+    /// use polar_bear_hft_crypto::crypto::ed25519::Ed25519SignatureResult;
+    ///
+    /// let result = Ed25519SignatureResult::default();
+    /// assert_eq!(result.signature_bytes.len(), 64);
+    /// assert_eq!(result.signature_hex.len(), 128);
+    /// ```
     #[test]
     fn deterministic_signatures() {
         // Ed25519 signing is deterministic: same key + same message = same signature
@@ -195,6 +304,17 @@ mod tests {
         assert_eq!(sig1.signature_hex, sig2.signature_hex);
     }
 
+    /// Tests that a tampered message fails verification.
+    ///
+    /// # Examples
+    /// ```
+    /// use polar_bear_hft_crypto::crypto::ed25519::Ed25519Signer;
+    ///
+    /// let signer = Ed25519Signer::generate();
+    /// let result = signer.sign(b"original");
+    /// let valid = signer.verify(b"tampered", &result.signature_hex);
+    /// assert!(valid.is_err());
+    /// ```
     #[test]
     fn tampered_message_fails() {
         let signer = Ed25519Signer::generate();
@@ -203,6 +323,16 @@ mod tests {
         assert!(!valid);
     }
 
+    /// Tests that the `from_hex` method restores a signer from a valid hex string.
+    ///
+    /// # Examples
+    /// ```
+    /// use polar_bear_hft_crypto::crypto::ed25519::Ed25519Signer;
+    ///
+    /// let original = Ed25519Signer::generate();
+    /// let restored = Ed25519Signer::from_hex(&original.private_key_hex()).unwrap();
+    /// assert_eq!(original.verifying_key_hex(), restored.verifying_key_hex());
+    /// ```
     #[test]
     fn from_hex_roundtrip() {
         let original = Ed25519Signer::generate();
@@ -210,6 +340,20 @@ mod tests {
         assert_eq!(original.verifying_key_hex(), restored.verifying_key_hex());
     }
 
+    /// Tests that the `standalone_verifier` verifies a message using a verifier from the signer's
+    /// verifying key.
+    ///
+    /// # Examples
+    /// ```
+    /// use polar_bear_hft_crypto::crypto::ed25519::Ed25519Signer;
+    ///
+    /// let signer = Ed25519Signer::generate();
+    /// let msg = b"standalone verifier test";
+    /// let result = signer.sign(msg);
+    ///
+    /// let verifier = Ed25519Verifier::from_hex(&signer.verifying_key_hex()).unwrap();
+    /// assert!(verifier.verify(msg, &result.signature_hex).unwrap());
+    /// ```
     #[test]
     fn standalone_verifier() {
         let signer = Ed25519Signer::generate();
@@ -220,6 +364,17 @@ mod tests {
         assert!(verifier.verify(msg, &result.signature_hex).unwrap());
     }
 
+    /// Tests that a message signed by one key fails verification with a different key.
+    ///
+    /// # Examples
+    /// ```
+    /// use polar_bear_hft_crypto::crypto::ed25519::Ed25519Signer;
+    ///
+    /// let a = Ed25519Signer::generate();
+    /// let b = Ed25519Signer::generate();
+    /// let result = a.sign(b"signed by A");
+    /// assert!(!b.verify(b"signed by A", &result.signature_hex).unwrap());
+    /// ```
     #[test]
     fn cross_key_fails() {
         let a = Ed25519Signer::generate();
