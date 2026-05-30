@@ -74,7 +74,7 @@ impl HftAgent {
     /// # #[tokio::main]
     /// # async fn main() -> anyhow::Result<()> {
     /// use polar_bear_hft_crypto::agent::hft_agent::HftAgent;
-    /// let agent = HftAgent::new();
+    /// let agent = HftAgent::new().expect("Failed to init HftAgent");
     /// let decision = agent.analyse_trade(
     ///     "BTC/USDT", "buy", 0.01, Some(65000.0), "Binance"
     /// ).await?;
