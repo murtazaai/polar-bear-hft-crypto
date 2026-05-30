@@ -5,7 +5,7 @@ Cargo.lock
 
 # ── Environment / secrets - NEVER COMMIT ─────────────────────────
 .env
-.env.*
+# .env.*
 /keys/
 *.enc
 **/secrets/
