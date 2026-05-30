@@ -64,6 +64,20 @@
     },
     // ── Linting ────────────────────────────────────────────────────────────────
     {
+        "label": "clippy - no linting warnings)",
+        "command": "cargo",
+        "args": [
+            "clippy",
+            "--all-targets",
+        ],
+        "env": {
+            "CARGO_INCREMENTAL": "1"
+        },
+        "allow_concurrent_runs": false,
+        "use_new_terminal": false,
+        "reveal": "always"
+    },
+    {
         "label": "clippy - strict (all targets, -D warnings)",
         "command": "cargo",
         "args": [
@@ -175,6 +189,20 @@
         "reveal": "always"
     },
     // ── Tests ──────────────────────────────────────────────────────────────────
+    {
+        "label": "test - all tests must pass",
+        "command": "cargo",
+        "args": [
+            "test",
+        ],
+        "env": {
+            "RUST_LOG": "polar_bear_hft_crypto=debug",
+            "RUST_BACKTRACE": "1"
+        },
+        "allow_concurrent_runs": false,
+        "use_new_terminal": false,
+        "reveal": "always"
+    },
     {
         "label": "test - workspace (8 threads)",
         "command": "cargo",
