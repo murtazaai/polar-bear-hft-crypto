@@ -3,6 +3,8 @@
 **Cryptographic signing layer for high-frequency trading**  
 ECDSA / Ed25519 forward-engineering · 7-exchange API authentication · Rig (ARC) AI agent integration
 
+[![Crates.io](https://img.shields.io/crates/v/polar-bear-hft-crypto.svg)](https://crates.io/crates/polar-bear-hft-crypto)
+[![Docs.rs](https://docs.rs/polar-bear-hft-crypto/badge.svg)](https://docs.rs/polar-bear-hft-crypto)
 [![Rust](https://img.shields.io/badge/rust-1.93.1+-orange)](https://www.rust-lang.org/)
 [![Edition](https://img.shields.io/badge/Edition-2024-blue)](https://doc.rust-lang.org/edition-guide/)
 [![rig-core](https://img.shields.io/badge/rig--core-0.37-purple)](https://rig.rs)

@@ -1,6 +1,6 @@
 [package]
 name        = "polar-bear-hft-crypto"
-version     = "0.3.1"
+version     = "0.3.2"
 edition     = "2021"
 rust-version = "1.93.1"
 authors     = ["Murtaza Ali Imtiaz <very.kool.king@gmail.com>"]
