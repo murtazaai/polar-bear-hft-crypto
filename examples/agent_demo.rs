@@ -57,9 +57,7 @@ async fn main() -> anyhow::Result<()> {
     ];
 
     for (symbol, side, qty, price, exchange) in &scenarios {
-        let price_label = price
-            .map(|p| format!("limit @ {p:.2}"))
-            .unwrap_or_else(|| "market".to_string());
+        let price_label = price.map_or_else(|| "market".to_string(), |p| format!("limit @ {p:.2}"));
 
         println!("── Proposal: {side} {qty} {symbol} ({price_label}) on {exchange} ──");
 

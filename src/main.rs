@@ -19,7 +19,7 @@ use polar_bear_hft_crypto::{
         hmac::{hmac_sha256_hex, hmac_sha512_hex},
     },
     exchange::{
-        auth::ExchangeAuth,
+        auth::{ExchangeAuth, HmacCredentials},
         binance::BinanceAuth,
         bybit::BybitAuth,
         coinbase::CoinbaseAuth,
@@ -147,8 +147,6 @@ fn demo_exchanges() -> Result<()> {
     println!("╚══════════════════════════════════════════════════════════════════╝");
     println!("  ⚠  DRY-RUN: credentials are placeholders. No live orders placed.");
     println!();
-
-    use polar_bear_hft_crypto::exchange::auth::HmacCredentials;
 
     let symbol = "BTCUSDT";
     let side = "BUY";
