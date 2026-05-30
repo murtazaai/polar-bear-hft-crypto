@@ -41,7 +41,7 @@
 //!   break ECDSA when k is reused
 //! - Hyperliquid and Solana use Ed25519 as their native signing algorithm
 
-use anyhow::{Result, anyhow};
+use anyhow::{anyhow, Result};
 use ed25519_dalek::{Signature, Signer, SigningKey, Verifier, VerifyingKey};
 use rand::rngs::OsRng;
 
@@ -76,6 +76,9 @@ impl Ed25519Signer {
     /// let restored = Ed25519Signer::from_hex(&original.private_key_hex()).unwrap();
     /// assert_eq!(original.verifying_key_hex(), restored.verifying_key_hex());
     /// ```
+    ///
+    /// # Panics
+    /// Panics if the hex string is not 64 characters or contains invalid characters.
     pub fn from_hex(hex_str: &str) -> Result<Self> {
         let bytes = hex::decode(hex_str).map_err(|e| anyhow!("hex decode: {e}"))?;
         if bytes.len() != 32 {
