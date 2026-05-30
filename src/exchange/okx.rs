@@ -23,7 +23,7 @@ use anyhow::Result;
 
 use crate::{
     crypto::hmac::hmac_sha256_base64,
-    exchange::auth::{ExchangeAuth, SignedRequest, timestamp_iso8601},
+    exchange::auth::{timestamp_iso8601, ExchangeAuth, SignedRequest},
 };
 
 const BASE_URL: &str = "https://www.okx.com";

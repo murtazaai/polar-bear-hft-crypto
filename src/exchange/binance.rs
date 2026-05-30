@@ -21,7 +21,7 @@ use anyhow::Result;
 
 use crate::{
     crypto::hmac::hmac_sha256_hex,
-    exchange::auth::{ExchangeAuth, HmacCredentials, SignedRequest, timestamp_ms},
+    exchange::auth::{timestamp_ms, ExchangeAuth, HmacCredentials, SignedRequest},
 };
 
 const BASE_URL: &str = "https://api.binance.com";

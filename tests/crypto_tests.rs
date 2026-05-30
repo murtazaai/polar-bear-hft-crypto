@@ -43,11 +43,9 @@ fn ecdsa_wrong_key_rejects_signature() {
     let signer_b = EcdsaSigner::generate();
     let result = signer_a.sign(b"signed by A");
     let verifier_b = EcdsaVerifier::from_hex(&signer_b.verifying_key_hex()).unwrap();
-    assert!(
-        !verifier_b
-            .verify(b"signed by A", &result.signature_hex)
-            .unwrap()
-    );
+    assert!(!verifier_b
+        .verify(b"signed by A", &result.signature_hex)
+        .unwrap());
 }
 
 #[test]

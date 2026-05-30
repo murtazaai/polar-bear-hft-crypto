@@ -18,7 +18,7 @@
 use std::{collections::HashMap, fmt::Write};
 
 use anyhow::Result;
-use base64::{Engine, engine::general_purpose::STANDARD as B64};
+use base64::{engine::general_purpose::STANDARD as B64, Engine};
 
 use crate::{
     crypto::hmac::{hmac_sha256, hmac_sha512},
@@ -52,8 +52,8 @@ impl KrakenAuth {
     /// Generate a Kraken nonce: microseconds since Unix epoch.
     fn nonce() -> String {
         let ts = chrono::Utc::now();
-        let micros =
-            u64::try_from(ts.timestamp()).unwrap_or(0) * 1_000_000 + u64::from(ts.timestamp_subsec_micros());
+        let micros = u64::try_from(ts.timestamp()).unwrap_or(0) * 1_000_000
+            + u64::from(ts.timestamp_subsec_micros());
         micros.to_string()
     }
 

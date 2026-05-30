@@ -28,7 +28,7 @@ use anyhow::Result;
 
 use crate::{
     crypto::ed25519::{Ed25519SignatureResult, Ed25519Signer},
-    exchange::auth::{SignedRequest, timestamp_ms},
+    exchange::auth::{timestamp_ms, SignedRequest},
 };
 
 const BASE_URL: &str = "https://api.hyperliquid.xyz";

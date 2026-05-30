@@ -33,13 +33,13 @@
 //! - ECDSA signatures are 64 bytes (compact DER or raw r||s)
 //! - Hardware acceleration via dedicated ASICs in exchange co-location racks
 
-use anyhow::{Result, anyhow};
+use anyhow::{anyhow, Result};
 use k256::{
-    EncodedPoint,
     ecdsa::{
-        Signature, SigningKey, VerifyingKey,
         signature::{Signer, Verifier},
+        Signature, SigningKey, VerifyingKey,
     },
+    EncodedPoint,
 };
 use rand::rngs::OsRng;
 

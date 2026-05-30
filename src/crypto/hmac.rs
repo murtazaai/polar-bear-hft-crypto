@@ -16,8 +16,8 @@
 //! - Standard across Binance, OKX, Bybit, Coinbase, `KuCoin` REST APIs
 //! - HMAC-SHA512 variant used by Kraken for extra margin
 
-use anyhow::{Result, anyhow};
-use base64::{Engine, engine::general_purpose::STANDARD as B64};
+use anyhow::{anyhow, Result};
+use base64::{engine::general_purpose::STANDARD as B64, Engine};
 use hmac::{Hmac, Mac};
 use sha2::{Sha256, Sha512};
 

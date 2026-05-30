@@ -29,7 +29,7 @@ use anyhow::Result;
 /// secret.
 use crate::{
     crypto::hmac::hmac_sha256_base64,
-    exchange::auth::{ExchangeAuth, SignedRequest, timestamp_ms},
+    exchange::auth::{timestamp_ms, ExchangeAuth, SignedRequest},
 };
 
 /// The base URL for the `KuCoin` API.
