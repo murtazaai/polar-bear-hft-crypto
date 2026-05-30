@@ -32,7 +32,7 @@ const BASE_URL: &str = "https://api.coinbase.com";
 /// # Example
 ///
 /// ```rust,no_run
-/// use polar_bear_hft_crypto::exchange::CoinbaseAuth;
+/// use polar_bear_hft_crypto::exchange::coinbase::CoinbaseAuth;
 ///
 /// let auth = CoinbaseAuth::from_env().unwrap();
 /// ```
