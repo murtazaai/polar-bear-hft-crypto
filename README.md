@@ -10,7 +10,7 @@ ECDSA / Ed25519 forward-engineering · 7-exchange API authentication · Rig (ARC
 [![rig-core](https://img.shields.io/badge/rig--core-0.37-purple)](https://rig.rs)
 [![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue)](LICENSE-MIT)
 
-> Built by **[Murtaza Ali Imtiaz](https://github.com/murtazaai)** · Technology Lead · Polar Bear Systems · July 2019–Present
+> Built by **[Murtaza Ali Imtiaz](https://github.com/murtazaai)** · Technology Lead · **Polar Bear Systems** · July 2019–Present
 
 ---
 
