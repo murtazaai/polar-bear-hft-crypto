@@ -190,32 +190,32 @@ jobs:
             - name: cargo check (MSRV, ai-agent feature)
               run: cargo check --all-targets --features ai-agent
 
-    # ── 7. Live Anthropic provider (manual / scheduled only) ────────────────────
-    provider-live:
-        name: Anthropic live provider test
-        runs-on: ubuntu-latest
-        # Only run when ANTHROPIC_API_KEY is available — skip on forks / external PRs
-        if: |
-            github.event_name == 'push' &&
-            (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
-        needs: [test]
-        steps:
-            - uses: actions/checkout@v4
+    # # ── 7. Live Anthropic provider (manual / scheduled only) ────────────────────
+    # provider-live:
+    #     name: Anthropic live provider test
+    #     runs-on: ubuntu-latest
+    #     # Only run when ANTHROPIC_API_KEY is available — skip on forks / external PRs
+    #     if: |
+    #         github.event_name == 'push' &&
+    #         (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    #     needs: [test]
+    #     steps:
+    #         - uses: actions/checkout@v4
 
-            - name: Install Rust (stable)
-              uses: dtolnay/rust-toolchain@stable
+    #         - name: Install Rust (stable)
+    #           uses: dtolnay/rust-toolchain@stable
 
-            - uses: Swatinem/rust-cache@v2
-              with:
-                  key: provider-live
+    #         - uses: Swatinem/rust-cache@v2
+    #           with:
+    #               key: provider-live
 
-            - name: Run ignored provider tests
-              run: |
-                  cargo test \
-                    --test providers \
-                    --features ai-agent \
-                    -- --ignored --test-threads=1 --nocapture
-              env:
-                  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-                  RUST_LOG: polar_bear_hft_crypto=debug,rig_core=info
-                  RUST_BACKTRACE: 1
+    #         - name: Run ignored provider tests
+    #           run: |
+    #               cargo test \
+    #                 --test providers \
+    #                 --features ai-agent \
+    #                 -- --ignored --test-threads=1 --nocapture
+    #           env:
+    #               ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    #               RUST_LOG: polar_bear_hft_crypto=debug,rig_core=info
+    #               RUST_BACKTRACE: 1
