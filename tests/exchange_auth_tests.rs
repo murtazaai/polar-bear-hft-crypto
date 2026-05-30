@@ -1,15 +1,17 @@
 //! Integration tests - exchange authentication
 
-use polar_bear_hft_crypto::crypto::ed25519::Ed25519Signer;
-use polar_bear_hft_crypto::exchange::{
-    auth::{ExchangeAuth, HmacCredentials},
-    binance::BinanceAuth,
-    bybit::BybitAuth,
-    coinbase::CoinbaseAuth,
-    hyperliquid::HyperliquidAuth,
-    kraken::KrakenAuth,
-    kucoin::{KuCoinAuth, KuCoinCredentials},
-    okx::{OkxAuth, OkxCredentials},
+use polar_bear_hft_crypto::{
+    crypto::ed25519::Ed25519Signer,
+    exchange::{
+        auth::{ExchangeAuth, HmacCredentials},
+        binance::BinanceAuth,
+        bybit::BybitAuth,
+        coinbase::CoinbaseAuth,
+        hyperliquid::HyperliquidAuth,
+        kraken::KrakenAuth,
+        kucoin::{KuCoinAuth, KuCoinCredentials},
+        okx::{OkxAuth, OkxCredentials},
+    },
 };
 
 fn binance() -> BinanceAuth {

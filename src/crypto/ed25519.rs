@@ -14,12 +14,12 @@
 //! 1. Sample 32-byte secret seed  s  (private key)
 //! 2. h = SHA-512(s)               → 64 bytes
 //! 3. Clamp h[0..32]:
-//!    - h[0]  &= 248               (clear 3 low bits - cofactor 8)
-//!    - h[31] &= 127               (clear high bit)
-//!    - h[31] |= 64                (set second-highest bit)
-//! 4. a = h[0..32] as little-endian integer (private scalar)
+//!    - h\[0\]  &= 248               (clear 3 low bits - cofactor 8)
+//!    - h\[31\] &= 127               (clear high bit)
+//!    - h\[31\] |= 64                (set second-highest bit)
+//! 4. a = h\[0..32\] as little-endian integer (private scalar)
 //! 5. A = a · B                    (public key - 32-byte compressed point)
-//! 6. Nonce prefix = h[32..64]     (deterministic nonce material)
+//! 6. Nonce prefix = h\[32..64\]     (deterministic nonce material)
 //!
 //! ### Signing  (message M, private key s, public key A, nonce prefix P)
 //! 1. r = SHA-512(P || M) mod ℓ    (deterministic - no random k needed!)
@@ -43,6 +43,7 @@
 
 use anyhow::{Result, anyhow};
 use ed25519_dalek::{Signature, Signer, SigningKey, Verifier, VerifyingKey};
+use polar_bear_hft_crypto::crypto::ed25519::Ed25519Signer;
 use rand::rngs::OsRng;
 
 /// An Ed25519 signer backed by a 32-byte seed.
