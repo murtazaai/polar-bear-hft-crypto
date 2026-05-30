@@ -281,21 +281,20 @@ cargo run --example agent_demo --features ai-agent
 
 ## License
 
-Licensed under either of:
+Proprietary - © 2026 Murtaza Ali Imtiaz / Polar Bear Systems  
+See [LICENSE-PBS](LICENSE-PBS) for permitted use.
+
+Licensed under:
 
 - [MIT License](LICENSE-MIT)
 - [Apache License, Version 2.0](LICENSE-APACHE)
-
-at your option.
-
-© 2026 Murtaza Ali Imtiaz / Polar Bear Systems
 
 ---
 
 ## Author
 
-**Murtaza Ali Imtiaz**
+**Murtaza Ali Imtiaz** · Technology Lead · **Polar Bear Systems** · (July 2019 – Present)
 
-- LinkedIn: [LinkedIn](https://linkedin.com/in/murtazai)
 - GitHub: [@murtazaai](https://github.com/murtazaai)
+- LinkedIn: [linkedin.com/in/murtazai](https://linkedin.com/in/murtazai)
 - Portfolio: [murtazai.com](https://murtazai.com)
