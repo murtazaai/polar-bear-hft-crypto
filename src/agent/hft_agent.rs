@@ -35,7 +35,7 @@ use rig_core::{
 };
 
 const PREAMBLE: &str = "\
-You are a senior Rust HFT engineer at Polar Bear Systems specialising in \
+You are a senior Rust HFT engineer at Polar Bear (🍨) specialising in \
 Rig (ARC) - the high-performance Rust Inference Gateway for DeFi trading. \
 You analyse trade parameters, assess risk, and produce structured decisions. \
 You always output a JSON object with keys: \

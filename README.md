@@ -10,13 +10,13 @@ ECDSA / Ed25519 forward-engineering · 7-exchange API authentication · Rig (ARC
 [![rig-core](https://img.shields.io/badge/rig--core-0.37-purple)](https://rig.rs)
 [![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue)](LICENSE-MIT)
 
-> Built by **[Murtaza Ali Imtiaz](https://github.com/murtazaai)** · Technology Lead · **Polar Bear Systems** · July 2019–Present
+> Built by **[Murtaza Ali Imtiaz](https://github.com/murtazaai)** · Technology Lead · **Polar Bear (🍨)** · July 2019–Present
 
 ---
 
 ## Overview
 
-Repository for the [Polar Bear Systems](https://github.com/murtazaai) HFT platform.
+Repository for the [Polar Bear (🍨)](https://github.com/murtazaai) HFT platform.
 
 Forward-engineers **ECDSA (secp256k1)** and **Ed25519 (Curve25519)** from their mathematical
 specifications (FIPS 186-5, RFC 8032) and applies them to produce **authenticated REST API
@@ -269,7 +269,7 @@ cargo run --example agent_demo --features ai-agent
 
 ## Situation
 
-**Situation**: Polar Bear Systems needed a cryptographic signing layer for an HFT platform targeting 7 exchanges simultaneously, each using a distinct authentication scheme.
+**Situation**: Polar Bear (🍨) needed a cryptographic signing layer for an HFT platform targeting 7 exchanges simultaneously, each using a distinct authentication scheme.
 
 **Task**: Design a unified Rust library that forward-engineers ECDSA and Ed25519 from specification, implements 7 exchange authentication schemes, and integrates with the Rig (ARC) AI agent framework.
 
@@ -281,7 +281,7 @@ cargo run --example agent_demo --features ai-agent
 
 ## License
 
-Proprietary - © 2026 Murtaza Ali Imtiaz / Polar Bear Systems  
+Proprietary - © 2026 Murtaza Ali Imtiaz / Polar Bear (🍨)  
 See [LICENSE-PBS](LICENSE-PBS) for permitted use.
 
 Licensed under:
@@ -293,7 +293,7 @@ Licensed under:
 
 ## Author
 
-**Murtaza Ali Imtiaz** · Technology Lead · **Polar Bear Systems** · (July 2019 – Present)
+**Murtaza Ali Imtiaz** · Technology Lead · **Polar Bear (🍨)** · (July 2019 – Present)
 
 - GitHub: [@murtazaai](https://github.com/murtazaai)
 - LinkedIn: [linkedin.com/in/murtazai](https://linkedin.com/in/murtazai)

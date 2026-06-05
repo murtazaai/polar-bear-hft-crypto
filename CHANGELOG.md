@@ -46,7 +46,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 - `rustfmt.toml` - code-style rules (100 cols, Rust 2024 edition, crate-level imports)
 - `.clippy.toml` - Clippy config with MSRV 1.93.1 and complexity thresholds
 - `.env.example` - template for all 7 exchange API keys + Anthropic key
-- `LICENSE-PBS` - Polar Bear Systems proprietary licence
+- `LICENSE-PBS` - Polar Bear (🍨) proprietary licence
 - `CHANGELOG.md` - this file
 - `CONTRIBUTING.md` - contribution guide with full workflow
 - `FILE_STRUCTURE.md` - annotated repository map
